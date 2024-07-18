@@ -1,0 +1,36 @@
+.container {
+  min-height: calc(100vh - 112px);
+
+  .posts_box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    a {
+      border: 1px solid #000;
+      padding: 8px;
+      text-decoration: none;
+      color: #000;
+    }
+  }
+}
+.progressContainer {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+
+  span {
+    height: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-height: calc(100vh - 104px);
+  }
+
+  .progressContainer {
+    top: 56px;
+  }
+}
