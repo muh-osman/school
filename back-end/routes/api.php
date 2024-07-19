@@ -36,9 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class);
 
 
-    Route::apiResource('teachers', TeacherController::class);
-
-
+    Route::resource('teachers', TeacherController::class)->except(['index', 'show']);
 });
 
 
@@ -58,4 +56,11 @@ Route::middleware('guest')->group(function () {
 
     // API route for resetting the password (http://localhost:8000/api/reset-password)
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
+
+
+    // Route for getting all teachers without auth middleware
+    Route::get('/teachers', [TeacherController::class, 'index']);
+
+    // Route for getting a teacher by ID without auth middleware
+    Route::get('/teachers/{id}', [TeacherController::class, 'show']);
 });

@@ -63,6 +63,7 @@ export default function DeleteTeacher() {
               value={selectedTeacherId}
               onChange={(e) => setSelectedTeacherId(e.target.value)}
               disabled={isPending}
+              sx={{backgroundColor: "#fff"}}
             >
               {teachers === undefined && (
                 <MenuItem dir="rtl" value="">

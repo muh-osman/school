@@ -244,7 +244,11 @@ function DrawerAppBar(props) {
       </nav>
 
       {/* Outlet */}
-      <Box dir="rtl" component="main" sx={{ p: 3 }}>
+      <Box
+        dir="rtl"
+        component="main"
+        sx={{ p: 3, width: "100%", backgroundColor: "#fbfbfb" }}
+      >
         <Toolbar />
         <Outlet />
       </Box>
