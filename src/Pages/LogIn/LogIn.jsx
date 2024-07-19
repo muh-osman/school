@@ -16,6 +16,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Copyright from "../../Components/Copyright";
 // API
 import { useLoginApi } from "../../API/useLoginApi";
+// Images
+import loginBg from "../../Assets/Images/loginBg.jpg";
 
 export default function LogIn() {
   const formRef = React.useRef();
@@ -40,7 +42,7 @@ export default function LogIn() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+          backgroundImage: `url(${loginBg})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -65,7 +67,7 @@ export default function LogIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Log in
+            تسجيل الدخول
           </Typography>
           <Box
             ref={formRef}
@@ -79,27 +81,29 @@ export default function LogIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="البريد الالكتروني"
               name="email"
               autoComplete="email"
               autoFocus
-              disabled={isPending} // Disable the input field if the form has been submitted
+              disabled={isPending}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="كلمة المرور"
               type="password"
               id="password"
               autoComplete="current-password"
-              disabled={isPending} // Disable the input field if the form has been submitted
+              disabled={isPending}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-              disabled={isPending} // Disable the input field if the form has been submitted
+              label="تذكرني"
+              disabled={isPending}
+              dir="rtl"
+              style={{display: "block"}}
             />
 
             <LoadingButton
@@ -110,10 +114,10 @@ export default function LogIn() {
               loading={isPending}
               sx={{ mt: 3, mb: 2, transition: "0.1s" }}
             >
-              Log in
+              تسجيل الدخول
             </LoadingButton>
 
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link
                   component={RouterLink}
@@ -125,10 +129,11 @@ export default function LogIn() {
               </Grid>
               <Grid item>
                 <Link component={RouterLink} to="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
+
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>

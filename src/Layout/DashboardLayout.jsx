@@ -23,7 +23,7 @@ import logo from "../Assets/Images/logo.png";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 // React router
 import { Link, useLocation, Outlet } from "react-router-dom";
 // Cookies
@@ -43,28 +43,28 @@ function ResponsiveDrawer(props) {
   const pages = [
     {
       id: 1,
-      title: "Dashboard",
+      title: "المعرض",
       path: "/dashboard",
       icon: <DashboardIcon sx={{ color: "#757575" }} />,
     },
     {
       id: 2,
-      title: "Add",
-      path: "/dashboard/add",
+      title: "الجداول",
+      path: "/dashboard/tables",
       icon: <AddBoxIcon sx={{ color: "#757575" }} />,
     },
-    {
-      id: 3,
-      title: "Edit",
-      path: "/dashboard/edit",
-      icon: <AutoFixHighIcon sx={{ color: "#757575" }} />,
-    },
-    {
-      id: 4,
-      title: "Delete",
-      path: "/dashboard/delete",
-      icon: <DeleteIcon sx={{ color: "#757575" }} />,
-    },
+    // {
+    //   id: 3,
+    //   title: "Edit",
+    //   path: "/dashboard/edit",
+    //   icon: <AutoFixHighIcon sx={{ color: "#757575" }} />,
+    // },
+    // {
+    //   id: 4,
+    //   title: "Delete",
+    //   path: "/dashboard/delete",
+    //   icon: <DeleteIcon sx={{ color: "#757575" }} />,
+    // },
   ];
 
   const { pathname } = useLocation();
@@ -106,10 +106,24 @@ function ResponsiveDrawer(props) {
               button
               component={Link}
               to={item.path}
-              selected={item.path === pathname}
+              // selected={item.path === pathname}
+              selected={
+                item.path === "/dashboard" && pathname === "/dashboard" ||
+                item.path === "/dashboard/tables" && pathname === "/dashboard/tables" ||
+
+                item.path === "/dashboard" && pathname === "/dashboard/add-teacher" ||
+                item.path === "/dashboard" && pathname === "/dashboard/edit-teacher" ||
+                item.path === "/dashboard" && pathname === "/dashboard/delete-teacher" ||
+
+                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/add-table" ||
+                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/edit-table" ||
+                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/delete-table"
+              }
             >
               <ListItemButton sx={{ color: "#757575" }}>
-                <ListItemIcon>
+                <ListItemText primary={item.title} />
+
+                <ListItemIcon sx={{ justifyContent: "flex-end" }}>
                   <Avatar
                     alt="icon"
                     sx={{
@@ -121,7 +135,6 @@ function ResponsiveDrawer(props) {
                     {item.icon}
                   </Avatar>
                 </ListItemIcon>
-                <ListItemText primary={item.title} />
               </ListItemButton>
             </ListItem>
           );
@@ -152,7 +165,7 @@ function ResponsiveDrawer(props) {
   };
 
   return (
-    <Box sx={{ display: "flex" }} dir="ltr">
+    <Box sx={{ display: "flex" }} dir="rtl">
       <AppBar
         position="fixed"
         sx={{
@@ -171,7 +184,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
 
-          <div className="nav_link" style={{ marginLeft: "auto" }}>
+          <div className="nav_link" style={{ marginRight: "auto" }}>
             <LoadingButton
               onClick={logout}
               variant="contained"
@@ -191,7 +204,7 @@ function ResponsiveDrawer(props) {
                 },
               }}
             >
-              Logout
+              خروج
             </LoadingButton>
           </div>
         </Toolbar>

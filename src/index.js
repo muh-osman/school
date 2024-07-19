@@ -9,6 +9,10 @@ import reportWebVitals from "./reportWebVitals";
 // MUI theme
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
+// MUI RTL
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 // Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,11 +26,19 @@ const qc = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 0,
+      refetchOnWindowFocus: false,
     },
   },
 });
 
+// Create rtl cache
+const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [rtlPlugin],
+});
+
 const defaultTheme = createTheme({
+  direction: "rtl", // Set the direction to right-to-left
   palette: {
     primary: {
       main: "#7431fa",
@@ -39,16 +51,18 @@ const defaultTheme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <ThemeProvider theme={defaultTheme}>
-    <CookiesProvider>
-      <QueryClientProvider client={qc}>
-        <ToastContainer />
-        <ScopedCssBaseline>
-          <App />
-        </ScopedCssBaseline>
-      </QueryClientProvider>
-    </CookiesProvider>
-  </ThemeProvider>
+  <CacheProvider value={cacheRtl}>
+    <ThemeProvider theme={defaultTheme}>
+      <CookiesProvider>
+        <QueryClientProvider client={qc}>
+          <ToastContainer />
+          <ScopedCssBaseline>
+            <App />
+          </ScopedCssBaseline>
+        </QueryClientProvider>
+      </CookiesProvider>
+    </ThemeProvider>
+  </CacheProvider>
   // </React.StrictMode>
 );
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TeacherController;
 
 
 
@@ -33,6 +34,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Update post by id:   method POST   =>  http://localhost:8000/api/posts/1?_method=PATCH
     // Delete post by id:   method DELETE =>  http://localhost:8000/api/posts/1
     Route::apiResource('posts', PostController::class);
+
+
+    Route::apiResource('teachers', TeacherController::class);
 
 
 });

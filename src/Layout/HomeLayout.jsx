@@ -28,19 +28,19 @@ const drawerWidth = 240;
 const pages = [
   {
     id: 1,
-    title: "Home",
+    title: "المعرض",
     path: "/",
   },
   {
     id: 2,
-    title: "Blog",
-    path: "blog",
+    title: "الجداول",
+    path: "tables",
   },
-  {
-    id: 3,
-    title: "About",
-    path: "about",
-  },
+  // {
+  //   id: 3,
+  //   title: "About",
+  //   path: "about",
+  // },
 ];
 
 function DrawerAppBar(props) {
@@ -61,7 +61,10 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Toolbar style={{ justifyContent: "center" }}>
+      <Toolbar
+        style={{ justifyContent: "center" }}
+        sx={{ marginLeft: { xs: "0px", sm: "24px" } }}
+      >
         <Link to="/" style={{ textDecoration: "none", color: "#fff" }}>
           <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
             <Avatar
@@ -96,13 +99,17 @@ function DrawerAppBar(props) {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{ direction: "ltr" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             {/* Logo in large screen */}
             <Toolbar
               sx={{ display: { xs: "none", md: "flex" } }}
-              style={{ justifyContent: "center", paddingLeft: 0 }}
+              style={{
+                justifyContent: "center",
+                paddingLeft: 0,
+                marginLeft: "24px",
+              }}
             >
               <Link to="/" style={{ textDecoration: "none", color: "#fff" }}>
                 <Stack
@@ -147,7 +154,7 @@ function DrawerAppBar(props) {
                     spacing={2}
                     sx={{ alignItems: "center" }}
                   >
-                    <Avatar
+                    {/* <Avatar
                       alt="Remy Sharp"
                       src={logo}
                       sx={{
@@ -156,7 +163,7 @@ function DrawerAppBar(props) {
                         textAlign: "center",
                         borderRadius: 0,
                       }}
-                    />
+                    /> */}
                   </Stack>
                 </Link>
               </Toolbar>
@@ -178,8 +185,18 @@ function DrawerAppBar(props) {
             </Box>
 
             {/* Login button */}
-            <Box sx={{ flexGrow: 0 }}>
-              <div className="nav_link" style={{ marginLeft: "auto" }}>
+            <Box
+              sx={{
+                flexGrow: 0,
+                marginRight: { xs: "0px", sm: "24px" },
+              }}
+            >
+              <div
+                className="nav_link"
+                style={{
+                  marginLeft: "auto",
+                }}
+              >
                 <Button
                   component={Link}
                   to={cookies.token ? "dashboard" : "login"}
@@ -188,6 +205,7 @@ function DrawerAppBar(props) {
                     backgroundColor: "#fbfbfb",
                     color: "#7431fa",
                     border: "1px solid transparent",
+
                     "&:hover": {
                       backgroundColor: "#7431fa",
                       color: "#fbfbfb",
@@ -195,7 +213,7 @@ function DrawerAppBar(props) {
                     },
                   }}
                 >
-                  {cookies.token ? "Dashboard" : "Login"}
+                  {cookies.token ? "لوحة التحكم" : "دخول"}
                 </Button>
               </div>
             </Box>
@@ -226,7 +244,7 @@ function DrawerAppBar(props) {
       </nav>
 
       {/* Outlet */}
-      <Box component="main" sx={{ p: 3 }}>
+      <Box dir="rtl" component="main" sx={{ p: 3 }}>
         <Toolbar />
         <Outlet />
       </Box>

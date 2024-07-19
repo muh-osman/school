@@ -8,7 +8,7 @@ import {
 import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
-import Blog from "./Pages/Blog/Blog";
+import Tables from "./Pages/Tables/Tables";
 import About from "./Pages/About/About";
 import LogIn from "./Pages/LogIn/LogIn";
 import SignUp from "./Pages/SignUp/SignUp";
@@ -19,6 +19,11 @@ import Auth from "./Utils/Auth";
 import NotAuth from "./Utils/NotAuth";
 import DashboardLayout from "./Layout/DashboardLayout";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import AddTeacher from "./Pages/Dashboard/AddTeacher/AddTeacher";
+import EditTeacher from "./Pages/Dashboard/EditTeacher/EditTeacher";
+import DeleteTeacher from "./Pages/Dashboard/DeleteTeacher/DeleteTeacher";
+
+import DashTables from "./Pages/Dashboard/Tables/Tables";
 import Post from "./Pages/Dashboard/Post/Post";
 import Add from "./Pages/Dashboard/Add/Add";
 import Edit from "./Pages/Dashboard/Edit/Edit";
@@ -33,7 +38,7 @@ export default function App() {
 
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
-          <Route path="blog" element={<Blog />} />
+          <Route path="tables" element={<Tables />} />
           <Route path="about" element={<About />} />
         </Route>
 
@@ -50,10 +55,15 @@ export default function App() {
         {/* Start protected route */}
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="post/:id" element={<Post />} />
-            <Route path="add" element={<Add />} />
-            <Route path="edit" element={<Edit />} />
-            <Route path="delete" element={<Delete />} />
+            <Route path="delete-teacher" element={<DeleteTeacher />} />
+            <Route path="add-teacher" element={<AddTeacher />} />
+            <Route path="edit-teacher" element={<EditTeacher />} />
+
+            <Route path="tables" element={<DashTables />} />
+            {/* <Route path="post/:id" element={<Post />} /> */}
+            {/* <Route path="add" element={<Add />} /> */}
+            {/* <Route path="edit" element={<Edit />} /> */}
+            {/* <Route path="delete" element={<Delete />} /> */}
           </Route>
         {/* End protected route */}
         </Route>

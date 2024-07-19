@@ -5,10 +5,13 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 // API
 import useShowPostsApi from "../../API/useShowPostsApi";
 // Toastify
 import { toast } from "react-toastify";
+
 
 export default function Dashboard() {
   const { data, isLoading, isError, error, fetchStatus, isSuccess } =
@@ -26,23 +29,32 @@ export default function Dashboard() {
 
   return (
     <div className={style.container}>
-
       {fetchStatus === "fetching" && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>
       )}
 
-      <h1>Dashboard</h1>
-      {isSuccess && data?.length === 0 && <p>No post to show.</p>}
-      <div className={style.posts_box}>
-        {data?.map(({ id, title, description }) => (
-          <Link to={`post/${id}`} key={id}>
-            <h3> {title} </h3>
-            <p>{description}</p>
-          </Link>
-        ))}
-      </div>
+      <Stack
+        sx={{pt: 6 }}
+        spacing={2}
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="14px"
+      >
+        <Link to={"add-teacher"}>
+          <Button  size="large" variant="contained">اضافة</Button>
+        </Link>
+
+        <Link to={"edit-teacher"}>
+          <Button size="large" color="secondary" variant="outlined">تعديل</Button>
+        </Link>
+
+        <Link to={"delete-teacher"}>
+          <Button size="large" color="error" variant="outlined">حذف</Button>
+        </Link>
+      </Stack>
     </div>
   );
 }
