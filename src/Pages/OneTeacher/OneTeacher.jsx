@@ -83,7 +83,7 @@ export default function OneTeacher() {
       {/* <!-- My Skills section end --> */}
 
       {/* <!-- Contacts section start --> */}
-      <div className={style.section}>
+      <div className={style.section} style={{marginBottom: "8px"}}>
         <h1>
           <span>تواصل</span>
         </h1>
