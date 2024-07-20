@@ -14,12 +14,18 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Copyright from "../../Components/Copyright";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // API
 import { useLoginApi } from "../../API/useLoginApi";
 // Images
 import loginBg from "../../Assets/Images/loginBg.jpg";
 
 export default function LogIn() {
+  const [showPassword, setShowPassword] = React.useState(false);
+
   const formRef = React.useRef();
 
   const { mutate, isPending } = useLoginApi();
@@ -93,17 +99,30 @@ export default function LogIn() {
               fullWidth
               name="password"
               label="كلمة المرور"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               disabled={isPending}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="تذكرني"
               disabled={isPending}
               dir="rtl"
-              style={{display: "block"}}
+              style={{ display: "block" }}
             />
 
             <LoadingButton
