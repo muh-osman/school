@@ -21,14 +21,17 @@ export default function OneTeacher() {
           <LinearProgress />
         </div>
       )}
+
       {/* <!-- header start --> */}
       <div id="header" className={`${style.section} ${style.header}`}>
         {teacher?.image && (
-          <img
-            src={`${imgUrl}${teacher.image.replace("/storage/images", "")}`}
-            alt="My pic"
-            className={style.img_circle}
-          />
+          <div>
+            <img
+              src={`${imgUrl}${teacher.image.replace("/storage/images", "")}`}
+              alt={teacher.name}
+              className={style.img_circle}
+            />
+          </div>
         )}
         <p>{teacher?.name}</p>
       </div>
@@ -39,7 +42,7 @@ export default function OneTeacher() {
         <h1>
           <span>نبذة شخصية</span>
         </h1>
-        <p>{teacher?.bio}</p>
+        <p style={{ whiteSpace: "pre-wrap" }}>{teacher?.bio}</p>
       </div>
       {/* <!-- About Me section end --> */}
 
@@ -47,30 +50,35 @@ export default function OneTeacher() {
       <div className={style.section}>
         <h1>
           <span>مهارات</span>
-
-          <Stack
-            className={style.stack}
-            sx={{ marginTop: "48px" }}
-            direction="row"
-            spacing={1}
-            justifyContent="center"
-          >
-            {teacher?.skills?.split("-").map((skill, index) => (
-              <Chip
-                key={index}
-                label={skill}
-                sx={{
-                  height: "40px",
-                  borderRadius: "160px",
-                  fontSize: "1rem",
-                  "& .MuiChip-label": {
-                    padding: "0 16px",
-                  },
-                }}
-              />
-            ))}
-          </Stack>
         </h1>
+
+        <Stack
+          className={style.stack}
+          sx={{
+            marginTop: "48px",
+            marginBottom: "16px",
+            flexWrap: "wrap",
+            gap: "16px",
+          }}
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+        >
+          {teacher?.skills?.split("-").map((skill, index) => (
+            <Chip
+              key={index}
+              label={skill}
+              sx={{
+                height: "40px",
+                borderRadius: "160px",
+                fontSize: "1rem",
+                "& .MuiChip-label": {
+                  padding: "0 16px",
+                },
+              }}
+            />
+          ))}
+        </Stack>
       </div>
       {/* <!-- My Skills section end --> */}
 
@@ -78,11 +86,13 @@ export default function OneTeacher() {
       <div className={style.section}>
         <h1>
           <span>تواصل</span>
-
-          <span className={style.contact}>
-            <a href={`mailto:${teacher?.email}`}>{teacher?.email}</a>
-          </span>
         </h1>
+
+        <div className={style.contact}>
+          <a dir="ltr" href={`mailto:${teacher?.email}`}>
+            {teacher?.email}
+          </a>
+        </div>
       </div>
       {/* <!-- Contacts section end --> */}
     </div>

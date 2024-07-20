@@ -82,12 +82,12 @@ export default function Home() {
                       {teacher.name}
                     </Typography>
                     <Typography
-                      variant="body2"
+                      variant="body1"
                       color="text.secondary"
                       className={style.card_text}
                     >
                       {teacher.bio.length > 100
-                        ? `${teacher.bio.substring(0, 115)}...`
+                        ? `${teacher.bio.substring(0, 125)}...`
                         : teacher.bio}
                     </Typography>
                   </CardContent>

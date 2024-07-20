@@ -15,7 +15,6 @@ import { useEditTeacherApi } from "../../../API/useEditTeacherApi";
 import { toast } from "react-toastify";
 
 export default function EditTeacher() {
-
   const editFormRef = useRef();
   const [selectedTeacherId, setSelectedTeachertId] = useState("");
   const [editFormData, setEditFormData] = useState({
@@ -164,7 +163,7 @@ export default function EditTeacher() {
                   dir="rtl"
                   multiline
                   rows={3}
-                  sx={{ backgroundColor: "#fff" }}
+                  sx={{ backgroundColor: "#fff", whiteSpace: "pre-wrap" }}
                 />
               </Grid>
               <Grid item xs={12}>
