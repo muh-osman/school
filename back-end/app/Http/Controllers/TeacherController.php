@@ -185,4 +185,27 @@ class TeacherController extends Controller
             'message' => 'Teacher deleted successfully'
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Search for a teacher by name.
+     */
+    public function searchTeacherByName(Request $request)
+    {
+        $name = $request->input('name');
+
+        $teachers = Teacher::where('name', 'like', $name . '%')->get();
+
+        if ($teachers->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No teachers found with the given name',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Teachers found successfully',
+            'teachers' => $teachers,
+        ]);
+    }
 }

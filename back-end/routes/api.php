@@ -63,4 +63,7 @@ Route::middleware('guest')->group(function () {
 
     // Route for getting a teacher by ID without auth middleware
     Route::get('/teachers/{id}', [TeacherController::class, 'show']);
+
+    // Search
+    Route::post('/teachers/search', [TeacherController::class, 'searchTeacherByName']);
 });
