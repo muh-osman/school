@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TeacherController extends Controller
 {
@@ -91,9 +92,17 @@ class TeacherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Teacher $teacher)
+    public function show($id)
     {
-        return response()->json($teacher);
+        try {
+            $teacher = Teacher::findOrFail($id);
+            return response()->json($teacher);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Teacher not found'
+            ], 404);
+        }
     }
 
 
