@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import useGetTeachersByIdApi from "../../API/useGetTeachersByIdApi";
 
 export default function OneTeacher() {
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const imgUrl = process.env.REACT_APP_IMAGE_URL;
 
   let { id } = useParams();
 
@@ -25,9 +25,7 @@ export default function OneTeacher() {
       <div id="header" className={`${style.section} ${style.header}`}>
         {teacher?.image && (
           <img
-            src={`${apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl + "/"}${
-              teacher.image
-            }`}
+            src={`${imgUrl}${teacher.image.replace("/storage/images", "")}`}
             alt="My pic"
             className={style.img_circle}
           />

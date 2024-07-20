@@ -12,7 +12,7 @@ import { CardActionArea } from "@mui/material";
 import useGetAllTeachersApi from "../../API/useGetAllTeachersApi";
 
 export default function Home() {
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const imgUrl = process.env.REACT_APP_IMAGE_URL;
   const { data: teachers, fetchStatus } = useGetAllTeachersApi();
   const cardContainerRef = useRef(null);
 
@@ -71,9 +71,10 @@ export default function Home() {
                   <CardMedia
                     className={style.card_media}
                     component="img"
-                    image={`${
-                      apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl + "/"
-                    }${teacher.image}`}
+                    image={`${imgUrl}${teacher.image.replace(
+                      "/storage/images",
+                      ""
+                    )}`}
                     alt={teacher.name}
                   />
                   <CardContent className={style.card_content}>
