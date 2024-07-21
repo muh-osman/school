@@ -25,6 +25,7 @@ import EditTeacher from "./Pages/Dashboard/EditTeacher/EditTeacher";
 import DeleteTeacher from "./Pages/Dashboard/DeleteTeacher/DeleteTeacher";
 
 import DashTables from "./Pages/Dashboard/Tables/Tables";
+import Profile from "./Pages/Dashboard/Profile/Profile";
 // import Post from "./Pages/Dashboard/Post/Post";
 // import Add from "./Pages/Dashboard/Add/Add";
 // import Edit from "./Pages/Dashboard/Edit/Edit";
@@ -66,6 +67,8 @@ export default function App() {
             {/* <Route path="add" element={<Add />} /> */}
             {/* <Route path="edit" element={<Edit />} /> */}
             {/* <Route path="delete" element={<Delete />} /> */}
+
+            <Route path="profile" element={<Profile />} />
           </Route>
         {/* End protected route */}
         </Route>

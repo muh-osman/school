@@ -1,0 +1,24 @@
+.container {
+    min-height: calc(100vh - 112px);
+  }
+
+  .progressContainer {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+
+    span {
+      height: 2px !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      min-height: calc(100vh - 104px);
+    }
+
+    .progressContainer {
+      top: 56px;
+    }
+  }

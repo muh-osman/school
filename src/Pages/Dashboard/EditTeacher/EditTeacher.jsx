@@ -21,7 +21,6 @@ export default function EditTeacher() {
     name: "",
     bio: "",
     skills: "",
-    email: "",
     image: "",
   });
 
@@ -48,7 +47,6 @@ export default function EditTeacher() {
         name: selectedTeacherData.name,
         bio: selectedTeacherData.bio,
         skills: selectedTeacherData.skills,
-        email: selectedTeacherData.email,
         // image: selectedTeacherData.image,
       });
     }
@@ -101,7 +99,7 @@ export default function EditTeacher() {
         component="form"
         noValidate
         onSubmit={handleSubmit}
-        sx={{ m: "auto", mt: 3, maxWidth: "350px" }}
+        sx={{ m: "auto", mt: 3, maxWidth: "700px" }}
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -178,7 +176,7 @@ export default function EditTeacher() {
                   onChange={handleInputChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="البريد الالكتروني"
@@ -190,7 +188,7 @@ export default function EditTeacher() {
                   onChange={handleInputChange}
                   dir="ltr"
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12}>
                 <TextField

@@ -53,12 +53,12 @@ function ResponsiveDrawer(props) {
       path: "/dashboard/tables",
       icon: <AddBoxIcon sx={{ color: "#757575" }} />,
     },
-    // {
-    //   id: 3,
-    //   title: "Edit",
-    //   path: "/dashboard/edit",
-    //   icon: <AutoFixHighIcon sx={{ color: "#757575" }} />,
-    // },
+    {
+      id: 3,
+      title: "الملف الشخصي",
+      path: "/dashboard/profile",
+      icon: <AutoFixHighIcon sx={{ color: "#757575" }} />,
+    },
     // {
     //   id: 4,
     //   title: "Delete",
@@ -110,6 +110,7 @@ function ResponsiveDrawer(props) {
               selected={
                 item.path === "/dashboard" && pathname === "/dashboard" ||
                 item.path === "/dashboard/tables" && pathname === "/dashboard/tables" ||
+                item.path === "/dashboard/profile" && pathname === "/dashboard/profile" ||
 
                 item.path === "/dashboard" && pathname === "/dashboard/add-teacher" ||
                 item.path === "/dashboard" && pathname === "/dashboard/edit-teacher" ||

@@ -51,7 +51,7 @@ export default function DeleteTeacher() {
         component="form"
         noValidate
         onSubmit={handleSubmit}
-        sx={{ m: "auto", mt: 3, maxWidth: "350px" }}
+        sx={{ m: "auto", mt: 3, maxWidth: "700px" }}
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
