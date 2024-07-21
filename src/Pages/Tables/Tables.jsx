@@ -1,6 +1,11 @@
+import Calculator from "awesome-react-calculator";
 
 export default function Tables() {
   return (
-    <div>Tables page (Under construction)</div>
-  )
+    <div dir ="ltr" className="App">
+      <div className="calculator">
+        <Calculator />
+      </div>
+    </div>
+  );
 }

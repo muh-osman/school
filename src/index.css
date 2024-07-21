@@ -22,3 +22,23 @@ textarea {
 input[type="file"] {
   cursor: pointer;
 }
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  align-items: center;
+}
+
+.calculator {
+  height: 25rem;
+  width: 15rem;
+}
+
+.result-panel {
+  overflow: auto !important;
+}
