@@ -58,9 +58,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* {teachers === undefined && <h3>جاري التحميل...</h3>} */}
-      {teachers?.length === 0 && <h3>لا يوجد بيانات لعرضها</h3>}
-
       {/* Search */}
       <div className={style.search_container}>
         <div className={style.search_box}>
@@ -108,6 +105,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* {teachers === undefined && <h3>جاري التحميل...</h3>} */}
+      {teachers?.length === 0 && <h3>لا يوجد بيانات لعرضها</h3>}
 
       <div className={style.card_container}>
         {teachers !== undefined &&

@@ -107,7 +107,7 @@ export default function EditTeacher() {
               required
               fullWidth
               select
-              label="اختر اسم"
+              label="اختر اسم الملف المراد تعديله"
               value={selectedTeacherId}
               onChange={(e) => setSelectedTeachertId(e.target.value)}
               disabled={isPending}

@@ -35,23 +35,15 @@ class TeacherController extends Controller
                 'name' => 'required|string|max:255',
                 'bio' => 'required|string',
                 'skills' => 'required|string',
-                'email' => 'required|email',
+                'email' => 'nullable|email',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             if ($request->hasFile('image')) {
-                try {
-                    $file = $request->file('image');
-                    $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                    $path = $file->storeAs('public/images', $filename);
-                    $imageUrl = Storage::url($path);
-                } catch (Exception $e) {
-                    Log::error('Image upload failed: ' . $e->getMessage());
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Failed to upload image. Please try again.',
-                    ], 500);
-                }
+                $file = $request->file('image');
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/images', $filename);
+                $imageUrl = Storage::url($path);
             } else {
                 return response()->json([
                     'status' => 'error',
@@ -59,29 +51,31 @@ class TeacherController extends Controller
                 ], 422);
             }
 
-            try {
-                $teacher = Teacher::create([
-                    'name' => $validated['name'],
-                    'bio' => $validated['bio'],
-                    'skills' => $validated['skills'],
-                    'email' => $validated['email'],
-                    'image' => $imageUrl,
-                ]);
-            } catch (QueryException $e) {
-                Log::error('Database error: ' . $e->getMessage());
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Failed to create teacher. Please try again.',
-                ], 500);
+            $teacherData = [
+                'name' => $validated['name'],
+                'bio' => $validated['bio'],
+                'skills' => $validated['skills'],
+                'image' => $imageUrl,
+            ];
+
+            if (isset($validated['email'])) {
+                $teacherData['email'] = $validated['email'];
             }
+
+            $teacher = Teacher::create($teacherData);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Teacher created successfully',
+                'message' => 'Created successfully',
                 'teacher' => $teacher
             ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->validator->errors()->first(),
+            ], 422);
         } catch (Exception $e) {
-            Log::error('Unexpected error in teacher creation: ' . $e->getMessage());
+            Log::error('Unexpected error in creation: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'An unexpected error occurred. Please try again.',
@@ -100,7 +94,7 @@ class TeacherController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Teacher not found'
+                'message' => 'Not found'
             ], 404);
         }
     }
@@ -115,7 +109,7 @@ class TeacherController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'bio' => 'sometimes|required|string',
             'skills' => 'sometimes|required|string',
-            'email' => 'sometimes|required|email',
+            'email' => 'nullable|email',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -134,7 +128,7 @@ class TeacherController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Teacher updated successfully',
+            'message' => 'Updated successfully',
             'teacher' => $teacher
         ]);
     }
@@ -182,7 +176,7 @@ class TeacherController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Teacher deleted successfully'
+            'message' => 'Deleted successfully'
         ], Response::HTTP_OK);
     }
 
@@ -198,13 +192,13 @@ class TeacherController extends Controller
         if ($teachers->isEmpty()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No teachers found with the given name',
+                'message' => 'Not found',
             ], 404);
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Teachers found successfully',
+            'message' => 'Found successfully',
             'teachers' => $teachers,
         ]);
     }
