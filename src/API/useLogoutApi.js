@@ -1,10 +1,12 @@
-import { useMutation, queryCache } from "@tanstack/react-query";
+import { useMutation, useQueryClient  } from "@tanstack/react-query";
 // API base
 import API from "./Api";
 // Cookies
 import { useCookies } from "react-cookie";
 
 export const useLogoutApi = () => {
+
+  const qc = useQueryClient();
   // Cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token", "verified", "userId"]);
 
@@ -15,15 +17,15 @@ export const useLogoutApi = () => {
     },
 
     onSuccess: () => {
-      queryCache.clear();
+      qc.clear()
       removeCookie("userId");
       removeCookie("verified");
       removeCookie("token");
     },
 
     onError: (err) => {
+      qc.clear()
       console.error(err);
-      queryCache.clear();
       removeCookie("userId");
       removeCookie("verified");
       removeCookie("token");
