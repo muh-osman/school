@@ -13,15 +13,19 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
+
 
 class TeacherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($user_id)
     {
-        $teachers = Teacher::all();
+        // Retrieve only the teachers associated with the specified user_id
+        $teachers = Teacher::where('user_id', $user_id)->with('user')->get();
+
         return response()->json($teachers);
     }
 
@@ -37,6 +41,7 @@ class TeacherController extends Controller
                 'skills' => 'required|string',
                 'email' => 'nullable|email',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'user_id' => 'required|exists:users,id',
             ]);
 
             if ($request->hasFile('image')) {
@@ -56,6 +61,7 @@ class TeacherController extends Controller
                 'bio' => $validated['bio'],
                 'skills' => $validated['skills'],
                 'image' => $imageUrl,
+                'user_id' => $validated['user_id'], // Assign user_id to the teacher
             ];
 
             if (isset($validated['email'])) {
@@ -89,7 +95,7 @@ class TeacherController extends Controller
     public function show($id)
     {
         try {
-            $teacher = Teacher::findOrFail($id);
+            $teacher = Teacher::with('user')->findOrFail($id);
             return response()->json($teacher);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -183,11 +189,15 @@ class TeacherController extends Controller
     /**
      * Search for a teacher by name.
      */
-    public function searchTeacherByName(Request $request)
+    public function searchTeacherByName(Request $request, $user_id)
     {
         $name = $request->input('name');
 
-        $teachers = Teacher::where('name', 'like', $name . '%')->get();
+        // Search for teachers by name associated with the specified user_id
+        $teachers = Teacher::where('user_id', $user_id)
+                            ->where('name', 'like', $name . '%')
+                            ->with('user')
+                            ->get();
 
         if ($teachers->isEmpty()) {
             return response()->json([

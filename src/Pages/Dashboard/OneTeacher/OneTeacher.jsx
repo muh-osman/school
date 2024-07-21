@@ -5,7 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 // Api
-import useGetTeachersByIdApi from "../../API/useGetTeachersByIdApi";
+import useGetTeachersByIdApi from "../../../API/useGetTeachersByIdApi";
 
 export default function OneTeacher() {
   const imgUrl = process.env.REACT_APP_IMAGE_URL;

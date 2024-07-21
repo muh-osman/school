@@ -136,22 +136,22 @@ export default function LogIn() {
               تسجيل الدخول
             </LoadingButton>
 
-            {/* <Grid container>
+            <Grid container>
               <Grid item xs>
-                <Link
+                {/* <Link
                   component={RouterLink}
                   to="/forgot-password"
                   variant="body2"
                 >
-                  Forgot password?
-                </Link>
+                  نسيت كلمة المرور
+                </Link> */}
               </Grid>
               <Grid item>
                 <Link component={RouterLink} to="/signup" variant="body2">
-                  Don't have an account? Sign Up
+                  ليس لديك حساب؟ إنشاء حساب
                 </Link>
               </Grid>
-            </Grid> */}
+            </Grid>
 
             <Copyright sx={{ mt: 5 }} />
           </Box>

@@ -53,7 +53,7 @@ export default function SignUp() {
           <ExitToAppIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-          Sign up
+          إنشاء حساب
         </Typography>
         <Box
           ref={formRef}
@@ -67,7 +67,7 @@ export default function SignUp() {
               <TextField
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="البريد الالكتروني"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -79,7 +79,7 @@ export default function SignUp() {
               <TextField
                 fullWidth
                 name="password"
-                label="Password"
+                label="كلمة المرور"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -97,13 +97,13 @@ export default function SignUp() {
             loading={isPending}
             sx={{ mt: 3, mb: 2, transition: "0.1s" }}
           >
-            Sign Up
+            إنشاء حساب
           </LoadingButton>
 
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link component={RouterLink} to="/login" variant="body2">
-                Already have an account? Sign in
+                هل لديك حساب؟ تسجيل الدخول
               </Link>
             </Grid>
           </Grid>

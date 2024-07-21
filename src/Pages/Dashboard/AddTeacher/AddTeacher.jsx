@@ -6,12 +6,19 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
+// Cookies
+import { useCookies } from "react-cookie";
 // Api
 import { useAddTeacherApi } from "../../../API/useAddTeacherApi";
 // Toastify
 import { toast } from "react-toastify";
 
 export default function AddTeacher() {
+
+  // Cookie
+  const [cookies, setCookie] = useCookies(["userId"]);
+
+
   const addFormRef = useRef();
   const [addFormData, setAddFormData] = useState({
     name: "",
@@ -58,6 +65,8 @@ export default function AddTeacher() {
     if (!validate) return;
     // Submit data
 
+
+
     const formData = new FormData();
     // Append all form data to the FormData object
     Object.keys(addFormData).forEach((key) => {
@@ -67,6 +76,10 @@ export default function AddTeacher() {
       }
       formData.append(key, addFormData[key]);
     });
+
+      // Append userId to the FormData object
+      const userId = cookies.userId
+    formData.append('user_id', userId);
 
     mutate(formData);
   };

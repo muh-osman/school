@@ -3,13 +3,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import API from "./Api";
 // Toastify
 import { toast } from "react-toastify";
+// Cookies
+import { useCookies } from "react-cookie";
 
 export const useSearchTeacherByNameApi = () => {
+
+  // Cookie
+  const [cookies, setCookie] = useCookies(["userId"]);
+  const userId = cookies.userId
+
   const qc = useQueryClient();
 
   return useMutation({
     mutationFn: async (searchQuery) => {
-      const res = await API.post(`api/teachers/search`, {
+      const res = await API.post(`api/teachers/search/${userId}`, {
         name: searchQuery,
       });
 

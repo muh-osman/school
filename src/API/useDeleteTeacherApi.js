@@ -5,8 +5,16 @@ import API from "./Api";
 import { toast } from "react-toastify";
 // Api
 import { fetchAllTeachers } from "./useGetAllTeachersApi";
+// Cookies
+import { useCookies } from "react-cookie";
 
 export const useDeleteTeacherApi = () => {
+
+  // Cookie
+  const [cookies, setCookie] = useCookies(["userId"]);
+  const userId = cookies.userId
+
+
   const qc = useQueryClient();
 
   return useMutation({
@@ -18,7 +26,7 @@ export const useDeleteTeacherApi = () => {
     onSuccess: () => {
       qc.prefetchQuery({
         queryKey: ["allTeachers"],
-        queryFn: () => fetchAllTeachers(),
+        queryFn: () => fetchAllTeachers(userId),
       });
     },
 

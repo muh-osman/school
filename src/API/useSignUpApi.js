@@ -12,7 +12,7 @@ export const useSignUpApi = () => {
   //
   const navigate = useNavigate();
   // Cookies
-  const [cookies, setCookie] = useCookies(["token", "verified"]);
+  const [cookies, setCookie] = useCookies(["token", "verified", "userId"]);
 
   return useMutation({
     mutationFn: async (data) => {
@@ -21,6 +21,7 @@ export const useSignUpApi = () => {
     },
 
     onSuccess: (responseData) => {
+      setCookie("userId", responseData.user.id);
       setCookie("verified", responseData.user.email_verified_at);
       setCookie("token", responseData.token);
       navigate("/dashboard", { replace: true });

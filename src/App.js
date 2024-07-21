@@ -8,9 +8,8 @@ import {
 import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
-import OneTeacher from "./Pages/OneTeacher/OneTeacher";
+import OneTeacher from "./Pages/Dashboard/OneTeacher/OneTeacher";
 import Tables from "./Pages/Tables/Tables";
-// import About from "./Pages/About/About";
 import LogIn from "./Pages/LogIn/LogIn";
 import SignUp from "./Pages/SignUp/SignUp";
 import VerifyEmail from "./Pages/VerifyEmail/VerifyEmail";
@@ -26,10 +25,6 @@ import DeleteTeacher from "./Pages/Dashboard/DeleteTeacher/DeleteTeacher";
 
 import DashTables from "./Pages/Dashboard/Tables/Tables";
 import Profile from "./Pages/Dashboard/Profile/Profile";
-// import Post from "./Pages/Dashboard/Post/Post";
-// import Add from "./Pages/Dashboard/Add/Add";
-// import Edit from "./Pages/Dashboard/Edit/Edit";
-// import Delete from "./Pages/Dashboard/Delete/Delete";
 import NotFound from "./Pages/NotFound/NotFound";
 
 
@@ -38,15 +33,9 @@ export default function App() {
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
 
-        <Route element={<HomeLayout />}>
-          <Route index element={<Home />} />
-          <Route path="tables" element={<Tables />} />
-          <Route path="teacher/:id" element={<OneTeacher />} />
-          {/* <Route path="about" element={<About />} /> */}
-        </Route>
-
         <Route element={<NotAuth />}>
         {/* Start Check if login */}
+          <Route index element={<LogIn />} />
           <Route path="login" element={<LogIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
@@ -58,15 +47,12 @@ export default function App() {
         {/* Start protected route */}
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="teacher/:id" element={<OneTeacher />} />
             <Route path="delete-teacher" element={<DeleteTeacher />} />
             <Route path="add-teacher" element={<AddTeacher />} />
             <Route path="edit-teacher" element={<EditTeacher />} />
 
             <Route path="tables" element={<DashTables />} />
-            {/* <Route path="post/:id" element={<Post />} /> */}
-            {/* <Route path="add" element={<Add />} /> */}
-            {/* <Route path="edit" element={<Edit />} /> */}
-            {/* <Route path="delete" element={<Delete />} /> */}
 
             <Route path="profile" element={<Profile />} />
           </Route>

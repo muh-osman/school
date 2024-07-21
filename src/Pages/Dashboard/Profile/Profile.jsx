@@ -29,6 +29,9 @@ export default function Profile() {
       // Reset the form after successful submission
       editFormRef.current.reset();
       setSelectedTeachertId("");
+      setEditFormData({
+        email: "",
+      })
       toast.success(data.message);
     }
   }, [isSuccess]);
@@ -91,7 +94,12 @@ export default function Profile() {
               select
               label="اسم الملف المراد اضافة بريد الكتروني له"
               value={selectedTeacherId}
-              onChange={(e) => setSelectedTeachertId(e.target.value)}
+              onChange={(e) => {
+                setSelectedTeachertId(e.target.value)
+                setEditFormData({
+                  email: "",
+                })
+              }}
               disabled={isPending}
             >
               {teachers === undefined && (
@@ -125,7 +133,7 @@ export default function Profile() {
                 name="email"
                 required
                 disabled={isPending}
-                value={editFormData.email}
+                value={editFormData.email || ''}
                 onChange={handleInputChange}
                 dir="ltr"
               />

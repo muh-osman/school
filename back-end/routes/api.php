@@ -37,6 +37,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::resource('teachers', TeacherController::class)->except(['index', 'show']);
+
+        // Route for getting all teachers that associated-with-user
+        Route::get('/teachers-associated-with-user/{user_id}', [TeacherController::class, 'index']);
+
+        // Route for getting a teacher by ID
+        Route::get('/teachers/{id}', [TeacherController::class, 'show']);
+
+        // Search
+        Route::post('/teachers/search/{user_id}', [TeacherController::class, 'searchTeacherByName']);
 });
 
 
@@ -58,12 +67,5 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
 
 
-    // Route for getting all teachers without auth middleware
-    Route::get('/teachers', [TeacherController::class, 'index']);
 
-    // Route for getting a teacher by ID without auth middleware
-    Route::get('/teachers/{id}', [TeacherController::class, 'show']);
-
-    // Search
-    Route::post('/teachers/search', [TeacherController::class, 'searchTeacherByName']);
 });
