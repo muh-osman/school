@@ -24,6 +24,7 @@ class User extends Authenticatable implements CanResetPassword
         'password',
         'role',
         'email_sha1_hash',
+        'pin',
     ];
 
     /**

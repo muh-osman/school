@@ -8,7 +8,7 @@ export const useLogoutApi = () => {
 
   const qc = useQueryClient();
   // Cookies
-  const [cookies, setCookie, removeCookie] = useCookies(["token", "verified", "userId"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token", "verified", "userId", "pinStatus"]);
 
   return useMutation({
     mutationFn: async () => {
@@ -20,6 +20,7 @@ export const useLogoutApi = () => {
       qc.clear()
       removeCookie("userId");
       removeCookie("verified");
+      removeCookie("pinStatus");
       removeCookie("token");
     },
 
@@ -28,6 +29,7 @@ export const useLogoutApi = () => {
       console.error(err);
       removeCookie("userId");
       removeCookie("verified");
+      removeCookie("pinStatus");
       removeCookie("token");
     },
   });

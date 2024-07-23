@@ -13,7 +13,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-
+import LoadingButton from "@mui/lab/LoadingButton";
+import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 // Image logo
@@ -22,6 +23,8 @@ import logo from "../Assets/Images/logo.png";
 import { Link, Outlet } from "react-router-dom";
 // Cookies
 import { useCookies } from "react-cookie";
+// API
+import { useLogoutApi } from "../API/useLogoutApi";
 
 const drawerWidth = 240;
 
@@ -45,7 +48,7 @@ const pages = [
 
 function DrawerAppBar(props) {
   // Cookie
-  const [cookies, setCookie] = useCookies(["token", "verified"]);
+  const [cookies, setCookie] = useCookies(["token", "verified", "pinStatus"]);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -90,12 +93,26 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+
+        {cookies.pinStatus === true && (
+          <ListItem key="9999" to="dashboard" component={Link} disablePadding>
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <ListItemText primary="لوحة التحكم" />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
     </Box>
   );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  // Logout
+  const { mutate, isPending } = useLogoutApi();
+  const logout = () => {
+    mutate();
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -181,6 +198,19 @@ function DrawerAppBar(props) {
                     </ListItemButton>
                   </ListItem>
                 ))}
+
+                {cookies.pinStatus === true && (
+                  <ListItem
+                    key="9999"
+                    to="dashboard"
+                    component={Link}
+                    disablePadding
+                  >
+                    <ListItemButton sx={{ textAlign: "center", color: "white", textWrap: "nowrap" }}>
+                      <ListItemText primary="لوحة التحكم" />
+                    </ListItemButton>
+                  </ListItem>
+                )}
               </List>
             </Box>
 
@@ -197,24 +227,48 @@ function DrawerAppBar(props) {
                   marginLeft: "auto",
                 }}
               >
-                <Button
-                  component={Link}
-                  to={cookies.token ? "dashboard" : "login"}
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#fbfbfb",
-                    color: "#7431fa",
-                    border: "1px solid transparent",
+                {!cookies.token ? (
+                  <Button
+                    component={Link}
+                    to={cookies.token ? "dashboard" : "login"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#fbfbfb",
+                      color: "#7431fa",
+                      border: "1px solid transparent",
 
-                    "&:hover": {
-                      backgroundColor: "#7431fa",
-                      color: "#fbfbfb",
+                      "&:hover": {
+                        backgroundColor: "#7431fa",
+                        color: "#fbfbfb",
+                        border: "1px solid #fbfbfb",
+                      },
+                    }}
+                  >
+                    دخول
+                  </Button>
+                ) : (
+                  <LoadingButton
+                    onClick={logout}
+                    variant="contained"
+                    disableRipple
+                    loading={isPending}
+                    loadingIndicator={
+                      <CircularProgress sx={{ color: "#fbfbfb" }} size={24} />
+                    } // Customize the loader color here
+                    sx={{
+                      backgroundColor: "#fbfbfb",
+                      color: "#7431fa",
                       border: "1px solid #fbfbfb",
-                    },
-                  }}
-                >
-                  {cookies.token ? "لوحة التحكم" : "دخول"}
-                </Button>
+                      transition: "0.1s",
+                      "&:hover": {
+                        backgroundColor: "#7431fa",
+                        color: "#fbfbfb",
+                      },
+                    }}
+                  >
+                    خروج
+                  </LoadingButton>
+                )}
               </div>
             </Box>
           </Toolbar>

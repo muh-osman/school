@@ -4,15 +4,20 @@ import { useParams } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+// Cookies
+import { useCookies } from "react-cookie";
 // Api
-import useGetTeachersByIdApi from "../../../API/useGetTeachersByIdApi";
+import useGetTeacherByIdApi from "../../API/useGetTeacherByIdApi";
 
 export default function OneTeacher() {
+  // Cookie
+  const [cookies] = useCookies(["token"]);
+
   const imgUrl = process.env.REACT_APP_IMAGE_URL;
 
   let { id } = useParams();
 
-  const { data: teacher, fetchStatus } = useGetTeachersByIdApi({ id });
+  const { data: teacher, fetchStatus } = useGetTeacherByIdApi({ id });
 
   return (
     <div className={style.container}>
@@ -21,6 +26,8 @@ export default function OneTeacher() {
           <LinearProgress />
         </div>
       )}
+
+      {!cookies.token && <h3>يرجى تسجيل الدخول لعرض النتائج</h3>}
 
       {teacher && (
         <>

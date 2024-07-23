@@ -87,6 +87,16 @@ export default function SignUp() {
                 disabled={isPending} // Disable the input field if the form has been submitted
               />
             </Grid>
+            <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="pin"
+              label="رمز دخول لوحة التحكم"
+              type="password"
+              disabled={isPending}
+            />
+            </Grid>
           </Grid>
 
           <LoadingButton

@@ -3,9 +3,12 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 export default function Auth() {
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token", "pinStatus"]);
 
   // console.log(cookies.token);
 
-  return cookies.token ? <Outlet /> : <Navigate to="login" />;
+
+
+
+  return cookies.token && cookies.pinStatus === true ? <Outlet /> : <Navigate to="dashboard-login" />;
 }

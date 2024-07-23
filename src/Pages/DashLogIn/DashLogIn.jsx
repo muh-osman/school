@@ -21,9 +21,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // API
 import { useLoginApi } from "../../API/useLoginApi";
 // Images
-import loginBg from "../../Assets/Images/loginBg.jpg";
+import dashBg from "../../Assets/Images/dashBg.webp";
 
-export default function LogIn() {
+export default function DashLogIn() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const formRef = React.useRef();
@@ -48,7 +48,7 @@ export default function LogIn() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: `url(${loginBg})`,
+          backgroundImage: `url(${dashBg})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -73,7 +73,7 @@ export default function LogIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            الدخول كضيف
+            الدخول كمدير
           </Typography>
           <Box
             ref={formRef}
@@ -99,30 +99,20 @@ export default function LogIn() {
               fullWidth
               name="password"
               label="كلمة المرور"
-              type={showPassword ? "text" : "password"}
+              type="password"
               id="password"
               autoComplete="current-password"
               disabled={isPending}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
             />
 
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="تذكرني"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="pin"
+              label="رمز الدخول"
+              type="password"
               disabled={isPending}
-              dir="rtl"
-              style={{ display: "block" }}
             />
 
             <LoadingButton
@@ -138,12 +128,8 @@ export default function LogIn() {
 
             <Grid container>
               <Grid item xs>
-                <Link
-                  component={RouterLink}
-                  to="/dashboard-login"
-                  variant="body2"
-                >
-                  لوحة التحكم
+                <Link component={RouterLink} to="/login" variant="body2">
+                  الدخول كضيف
                 </Link>
               </Grid>
               <Grid item>

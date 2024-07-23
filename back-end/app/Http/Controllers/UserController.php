@@ -31,6 +31,7 @@ class UserController extends Controller
             $validatedData = $request->validate([
                 'email' => 'required|string|email|unique:users,email',
                 'password' => 'required|string|min:8',
+                'pin' => 'required|string'
             ]);
 
             $user = User::create([
@@ -38,6 +39,7 @@ class UserController extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'role' => 3, // Set the default role value here
                 'email_sha1_hash' => sha1($validatedData['email']), // Store the SHA1 hash
+                'pin' => $validatedData['pin']
             ]);
 
             // // Generate the email verification URL
@@ -66,11 +68,13 @@ class UserController extends Controller
                     'id' => $user->id,
                     'email' => $user->email,
                     'role' => $user->role,
+                    'pin' => $user->pin,
                     'email_verified_at' => $user->email_verified_at,
                     'created_at' => $user->created_at,
                     'updated_at' => $user->updated_at,
                 ],
                 'message' => 'User registered and logged in successfully. Please verify your email.',
+                'pin_status' => 'true',
                 'token' => $token
             ], 201);
         } catch (ValidationException $e) {
@@ -94,35 +98,53 @@ class UserController extends Controller
         }
     }
 
-    // login
-    public function login(Request $request)
-    {
-        try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+// login
+public function login(Request $request)
+{
+    try {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-            if (Auth::attempt($request->only('email', 'password'))) {
-                $user = Auth::user();
-                $token = $user->createToken('authToken')->plainTextToken;
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
 
-                return response()->json([
-                    'user' => $user,
-                    'message' => 'Login successful.',
-                    'token' => $token,
-                ]);
+            // Check if the user provided a 'pin'
+            if ($request->has('pin')) {
+                if ($user->pin === $request->input('pin')) {
+                    $pinStatus = 'true'; // Pin matches
+                } else {
+                    return response()->json(['message' => 'Incorrect PIN provided.'], 422);
+                }
+            } else {
+                $pinStatus = 'guest'; // Pin not provided
             }
 
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+            $token = $user->createToken('authToken')->plainTextToken;
+
+            // Exclude the 'pin' field from the user data in the response
+            $userData = $user->toArray();
+            unset($userData['pin']);
+
+            return response()->json([
+                'user' => $userData,
+                'pin_status' => $pinStatus,
+                'message' => 'Login successful.',
+                'token' => $token,
             ]);
-        } catch (ValidationException $e) {
-            return response()->json(['message' => $e->getMessage()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Login failed. ' . $e->getMessage()], 500);
         }
+
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    } catch (ValidationException $e) {
+        return response()->json(['message' => $e->getMessage()], 422);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Login failed. ' . $e->getMessage()], 500);
     }
+}
+
 
     // Verify the user's email address.
     public function verifyEmail(Request $request)

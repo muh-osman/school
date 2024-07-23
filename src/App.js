@@ -8,9 +8,10 @@ import {
 import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
-import OneTeacher from "./Pages/Dashboard/OneTeacher/OneTeacher";
+import OneTeacher from "./Pages/OneTeacher/OneTeacher";
 import Tables from "./Pages/Tables/Tables";
 import LogIn from "./Pages/LogIn/LogIn";
+import DashLogIn from "./Pages/DashLogIn/DashLogIn";
 import SignUp from "./Pages/SignUp/SignUp";
 import VerifyEmail from "./Pages/VerifyEmail/VerifyEmail";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
@@ -26,6 +27,8 @@ import DeleteTeacher from "./Pages/Dashboard/DeleteTeacher/DeleteTeacher";
 import DashTables from "./Pages/Dashboard/Tables/Tables";
 import Profile from "./Pages/Dashboard/Profile/Profile";
 import NotFound from "./Pages/NotFound/NotFound";
+import OneTable from "./Pages/Dashboard/OneTable/OneTable";
+
 
 
 export default function App() {
@@ -33,10 +36,16 @@ export default function App() {
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
 
+        <Route element={<HomeLayout />}>
+          <Route index element={<Home />} />
+          <Route path="teacher/:id" element={<OneTeacher />} />
+          <Route path="tables" element={<Tables />} />
+        </Route>
+
         <Route element={<NotAuth />}>
         {/* Start Check if login */}
-          <Route index element={<LogIn />} />
           <Route path="login" element={<LogIn />} />
+          <Route path="dashboard-login" element={<DashLogIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
@@ -47,12 +56,13 @@ export default function App() {
         {/* Start protected route */}
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="teacher/:id" element={<OneTeacher />} />
+
             <Route path="delete-teacher" element={<DeleteTeacher />} />
             <Route path="add-teacher" element={<AddTeacher />} />
             <Route path="edit-teacher" element={<EditTeacher />} />
 
             <Route path="tables" element={<DashTables />} />
+            <Route path="table/:tableId" element={<OneTable />} />
 
             <Route path="profile" element={<Profile />} />
           </Route>

@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -25,7 +26,7 @@ import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 // React router
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { Link, useLocation, Outlet, useParams } from "react-router-dom";
 // Cookies
 import { useCookies } from "react-cookie";
 // API
@@ -37,6 +38,8 @@ import CustomToast from "../Components/CustomToast ";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
+
+  let { tableId } = useParams();
   // Cookie
   const [cookies, setCookie] = useCookies(["token", "verified"]);
 
@@ -118,7 +121,8 @@ function ResponsiveDrawer(props) {
 
                 item.path === "/dashboard/tables" && pathname === "/dashboard/tables/add-table" ||
                 item.path === "/dashboard/tables" && pathname === "/dashboard/tables/edit-table" ||
-                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/delete-table"
+                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/delete-table" ||
+                item.path === "/dashboard/tables" && pathname === `/dashboard/table/${tableId}`
               }
             >
               <ListItemButton sx={{ color: "#757575" }}>

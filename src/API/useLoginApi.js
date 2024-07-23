@@ -12,7 +12,7 @@ export const useLoginApi = () => {
   //
   const navigate = useNavigate();
   // Cookies
-  const [cookies, setCookie] = useCookies(["token", "verified", "userId"]);
+  const [cookies, setCookie] = useCookies(["token", "verified", "userId", "pinStatus"]);
 
   return useMutation({
     mutationFn: async (data) => {
@@ -23,8 +23,15 @@ export const useLoginApi = () => {
     onSuccess: (responseData) => {
       setCookie("userId", responseData.user.id);
       setCookie("verified", responseData.user.email_verified_at);
+      setCookie("pinStatus", responseData.pin_status);
       setCookie("token", responseData.token);
-      navigate("/dashboard", { replace: true });
+      if (responseData.pin_status === true) {
+        navigate("/dashboard", { replace: true });
+      }
+
+      if (responseData.pin_status === "guest") {
+        navigate("/", { replace: true });
+      }
     },
 
     onError: (err) => {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email_sha1_hash')->nullable(); // This column save email address as "sha1" hash encrypt to use it in verify email
             $table->unsignedTinyInteger('role')->default(3); // 1-superadmin, 2-admin, 3-user
             $table->string('password');
+            $table->string('pin');
             $table->rememberToken();
             $table->timestamps();
         });
