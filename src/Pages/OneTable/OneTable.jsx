@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 // API
-import useGetTableData from "../../../API/useGetTableData.Api";
+import useGetTableData from "../../API/useGetTableDataApi";
 
 export default function OneTable() {
   let { tableId } = useParams();

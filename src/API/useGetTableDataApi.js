@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import API from "./Api";
 
 export const fetchTableData = async (tableId) => {
-  const res = await API.get(`api/sheets/${tableId}`);
+  const res = await API.get(`api/tables/${tableId}`);
   return res.data;
 };
 

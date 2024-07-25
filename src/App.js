@@ -19,16 +19,21 @@ import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Auth from "./Utils/Auth";
 import NotAuth from "./Utils/NotAuth";
 import DashboardLayout from "./Layout/DashboardLayout";
+
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import AddTeacher from "./Pages/Dashboard/AddTeacher/AddTeacher";
 import EditTeacher from "./Pages/Dashboard/EditTeacher/EditTeacher";
 import DeleteTeacher from "./Pages/Dashboard/DeleteTeacher/DeleteTeacher";
 
 import DashTables from "./Pages/Dashboard/Tables/Tables";
+import AddTable from "./Pages/Dashboard/AddTable/AddTable";
+import EditTable from "./Pages/Dashboard/EditTable/EditTable";
+import EditOneTable from "./Pages/Dashboard/EditOneTable/EditOneTable";
+import DeleteTable from "./Pages/Dashboard/DeleteTable/DeleteTable";
+
 import Profile from "./Pages/Dashboard/Profile/Profile";
 import NotFound from "./Pages/NotFound/NotFound";
-import OneTable from "./Pages/Dashboard/OneTable/OneTable";
-
+import OneTable from "./Pages/OneTable/OneTable";
 
 
 export default function App() {
@@ -40,6 +45,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="teacher/:id" element={<OneTeacher />} />
           <Route path="tables" element={<Tables />} />
+          <Route path="table/:tableId" element={<OneTable />} />
         </Route>
 
         <Route element={<NotAuth />}>
@@ -57,12 +63,15 @@ export default function App() {
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
 
-            <Route path="delete-teacher" element={<DeleteTeacher />} />
             <Route path="add-teacher" element={<AddTeacher />} />
             <Route path="edit-teacher" element={<EditTeacher />} />
+            <Route path="delete-teacher" element={<DeleteTeacher />} />
 
             <Route path="tables" element={<DashTables />} />
-            <Route path="table/:tableId" element={<OneTable />} />
+            <Route path="add-table" element={<AddTable />} />
+            <Route path="edit-table" element={<EditTable />} />
+            <Route path="edit-table/:id" element={<EditOneTable />} />
+            <Route path="delete-table" element={<DeleteTable />} />
 
             <Route path="profile" element={<Profile />} />
           </Route>

@@ -1,4 +1,5 @@
-import style from "./DeleteTeacher.module.scss";
+import style from "./EditTable.module.scss";
+import { useNavigate } from "react-router-dom";
 // React
 import { useEffect, useRef, useState } from "react";
 // MUI
@@ -9,35 +10,27 @@ import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
 // Api
-import useGetAllTeachersApi from "../../../API/useGetAllTeachersApi";
-import { useDeleteTeacherApi } from "../../../API/useDeleteTeacherApi";
+import useGetAllTablesApi from "../../../API/useGetAllTablesApi";
 // Toastify
 import { toast } from "react-toastify";
 
-export default function DeleteTeacher() {
-  const deleteFormRef = useRef();
-  const [selectedTeacherId, setSelectedTeacherId] = useState("");
+export default function EditTable() {
+  const editFormRef = useRef();
+  const [selectedTableId, setSelectedTableId] = useState("");
 
-  const { data: teachers, fetchStatus } = useGetAllTeachersApi();
-  const { mutate, data, isPending, isSuccess } = useDeleteTeacherApi();
+  const { data: tables, fetchStatus } = useGetAllTablesApi();
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // required input
-    const validate = deleteFormRef.current.reportValidity();
+    const validate = editFormRef.current.reportValidity();
     if (!validate) return;
-    // Submit data
-    mutate(selectedTeacherId);
-  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      // Reset the form after successful submission
-      deleteFormRef.current.reset();
-      setSelectedTeacherId("");
-      toast.success(data.message);
-    }
-  }, [isSuccess]);
+    // Submit
+    navigate(`/dashboard/edit-table/${selectedTableId}`);
+  };
 
   return (
     <div className={style.container}>
@@ -47,7 +40,7 @@ export default function DeleteTeacher() {
         </div>
       )}
       <Box
-        ref={deleteFormRef}
+        ref={editFormRef}
         component="form"
         noValidate
         onSubmit={handleSubmit}
@@ -59,34 +52,32 @@ export default function DeleteTeacher() {
               required
               fullWidth
               select
-              label="اختر"
-              value={selectedTeacherId}
-              onChange={(e) => setSelectedTeacherId(e.target.value)}
-              disabled={isPending}
-              sx={{ backgroundColor: "#fff" }}
+              label="اختر الجدول المراد تعديله"
+              value={selectedTableId}
+              onChange={(e) => setSelectedTableId(e.target.value)}
             >
-              {teachers === undefined && (
+              {tables === undefined && (
                 <MenuItem dir="rtl" value="">
                   <em>جاري التحميل...</em>
                 </MenuItem>
               )}
 
-              {teachers?.length === 0 && (
+              {tables?.length === 0 && (
                 <MenuItem dir="rtl" value="">
-                  <em>لا يوجد بيانات لحذفها</em>
+                  <em>لا يوجد بيانات لتعديلها</em>
                 </MenuItem>
               )}
 
-              {teachers !== undefined &&
-                teachers?.length !== 0 &&
-                teachers.map((teacher) => (
+              {tables !== undefined &&
+                tables?.length !== 0 &&
+                tables.map((table) => (
                   <MenuItem
                     sx={{ fontFamily: '"Cairo", sans-serif !important' }}
                     dir="rtl"
-                    key={teacher.id}
-                    value={teacher.id}
+                    key={table.id}
+                    value={table.id}
                   >
-                    {teacher.name}
+                    {table.name}
                   </MenuItem>
                 ))}
             </TextField>
@@ -98,10 +89,9 @@ export default function DeleteTeacher() {
           fullWidth
           variant="contained"
           disableRipple
-          loading={isPending}
           sx={{ mt: 3, mb: 2, transition: "0.1s" }}
         >
-          حذف
+          تعديل
         </LoadingButton>
       </Box>
     </div>

@@ -118,7 +118,7 @@ export default function AddTeacher() {
               onChange={handleInputChange}
               dir="rtl"
               multiline
-              rows={3}
+              rows={5}
               sx={{ backgroundColor: "#fff" }}
             />
           </Grid>

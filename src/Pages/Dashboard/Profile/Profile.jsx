@@ -31,7 +31,7 @@ export default function Profile() {
       setSelectedTeachertId("");
       setEditFormData({
         email: "",
-      })
+      });
       toast.success(data.message);
     }
   }, [isSuccess]);
@@ -95,10 +95,10 @@ export default function Profile() {
               label="اسم الملف المراد اضافة بريد الكتروني له"
               value={selectedTeacherId}
               onChange={(e) => {
-                setSelectedTeachertId(e.target.value)
+                setSelectedTeachertId(e.target.value);
                 setEditFormData({
                   email: "",
-                })
+                });
               }}
               disabled={isPending}
             >
@@ -117,7 +117,12 @@ export default function Profile() {
               {teachers !== undefined &&
                 teachers?.length !== 0 &&
                 teachers.map((teacher) => (
-                  <MenuItem dir="rtl" key={teacher.id} value={teacher.id}>
+                  <MenuItem
+                    sx={{ fontFamily: '"Cairo", sans-serif !important' }}
+                    dir="rtl"
+                    key={teacher.id}
+                    value={teacher.id}
+                  >
                     {teacher.name}
                   </MenuItem>
                 ))}
@@ -133,7 +138,7 @@ export default function Profile() {
                 name="email"
                 required
                 disabled={isPending}
-                value={editFormData.email || ''}
+                value={editFormData.email || ""}
                 onChange={handleInputChange}
                 dir="ltr"
               />

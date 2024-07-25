@@ -5,6 +5,16 @@
   justify-content: center;
   background-color: #1a202c;
 
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  input {
+    background-color: #fff;
+    font-size: 18px;
+  }
+
   p {
     color: #a0aec0;
     font-size: 18px;

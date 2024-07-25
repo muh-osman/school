@@ -1,4 +1,4 @@
-import style from "./DeleteTeacher.module.scss";
+import style from "./DeleteTable.module.scss";
 // React
 import { useEffect, useRef, useState } from "react";
 // MUI
@@ -9,17 +9,17 @@ import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
 // Api
-import useGetAllTeachersApi from "../../../API/useGetAllTeachersApi";
-import { useDeleteTeacherApi } from "../../../API/useDeleteTeacherApi";
+import useGetAllTablesApi from "../../../API/useGetAllTablesApi";
+import { useDeleteTableApi } from "../../../API/useDeleteTableApi";
 // Toastify
 import { toast } from "react-toastify";
 
-export default function DeleteTeacher() {
+export default function DeleteTable() {
   const deleteFormRef = useRef();
-  const [selectedTeacherId, setSelectedTeacherId] = useState("");
+  const [selectedTableId, setSelectedTableId] = useState("");
 
-  const { data: teachers, fetchStatus } = useGetAllTeachersApi();
-  const { mutate, data, isPending, isSuccess } = useDeleteTeacherApi();
+  const { data: tables, fetchStatus } = useGetAllTablesApi();
+  const { mutate, data, isPending, isSuccess } = useDeleteTableApi();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,14 +27,14 @@ export default function DeleteTeacher() {
     const validate = deleteFormRef.current.reportValidity();
     if (!validate) return;
     // Submit data
-    mutate(selectedTeacherId);
+    mutate(selectedTableId);
   };
 
   useEffect(() => {
     if (isSuccess) {
       // Reset the form after successful submission
       deleteFormRef.current.reset();
-      setSelectedTeacherId("");
+      setSelectedTableId("");
       toast.success(data.message);
     }
   }, [isSuccess]);
@@ -59,34 +59,34 @@ export default function DeleteTeacher() {
               required
               fullWidth
               select
-              label="اختر"
-              value={selectedTeacherId}
-              onChange={(e) => setSelectedTeacherId(e.target.value)}
+              label="اختر جدول"
+              value={selectedTableId}
+              onChange={(e) => setSelectedTableId(e.target.value)}
               disabled={isPending}
               sx={{ backgroundColor: "#fff" }}
             >
-              {teachers === undefined && (
+              {tables === undefined && (
                 <MenuItem dir="rtl" value="">
                   <em>جاري التحميل...</em>
                 </MenuItem>
               )}
 
-              {teachers?.length === 0 && (
+              {tables?.length === 0 && (
                 <MenuItem dir="rtl" value="">
                   <em>لا يوجد بيانات لحذفها</em>
                 </MenuItem>
               )}
 
-              {teachers !== undefined &&
-                teachers?.length !== 0 &&
-                teachers.map((teacher) => (
+              {tables !== undefined &&
+                tables?.length !== 0 &&
+                tables.map((table) => (
                   <MenuItem
                     sx={{ fontFamily: '"Cairo", sans-serif !important' }}
                     dir="rtl"
-                    key={teacher.id}
-                    value={teacher.id}
+                    key={table.id}
+                    value={table.id}
                   >
-                    {teacher.name}
+                    {table.name}
                   </MenuItem>
                 ))}
             </TextField>

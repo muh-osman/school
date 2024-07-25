@@ -1,24 +1,34 @@
 .container {
-    min-height: calc(100vh - 112px);
+  min-height: calc(100vh - 112px);
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  input,
+  textarea {
+    background-color: #fff;
+    font-size: 18px;
+  }
+}
+
+.progressContainer {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+
+  span {
+    height: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-height: calc(100vh - 104px);
   }
 
   .progressContainer {
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-
-    span {
-      height: 2px !important;
-    }
+    top: 56px;
   }
-
-  @media (max-width: 600px) {
-    .container {
-      min-height: calc(100vh - 104px);
-    }
-
-    .progressContainer {
-      top: 56px;
-    }
-  }
+}

@@ -127,7 +127,12 @@ export default function EditTeacher() {
               {teachers !== undefined &&
                 teachers?.length !== 0 &&
                 teachers.map((teacher) => (
-                  <MenuItem dir="rtl" key={teacher.id} value={teacher.id}>
+                  <MenuItem
+                    sx={{ fontFamily: '"Cairo", sans-serif !important' }}
+                    dir="rtl"
+                    key={teacher.id}
+                    value={teacher.id}
+                  >
                     {teacher.name}
                   </MenuItem>
                 ))}

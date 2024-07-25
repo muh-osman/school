@@ -1,3 +1,5 @@
+import style from "./layout.module.scss";
+//
 import * as React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -115,7 +117,7 @@ function DrawerAppBar(props) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box className={style.container} sx={{ display: "flex" }}>
       <AppBar component="nav" sx={{ direction: "ltr" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -206,7 +208,13 @@ function DrawerAppBar(props) {
                     component={Link}
                     disablePadding
                   >
-                    <ListItemButton sx={{ textAlign: "center", color: "white", textWrap: "nowrap" }}>
+                    <ListItemButton
+                      sx={{
+                        textAlign: "center",
+                        color: "white",
+                        textWrap: "nowrap",
+                      }}
+                    >
                       <ListItemText primary="لوحة التحكم" />
                     </ListItemButton>
                   </ListItem>

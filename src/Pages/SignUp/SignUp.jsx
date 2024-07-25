@@ -1,3 +1,5 @@
+import style from "../../Layout/layout.module.scss";
+
 // React router
 import { Link as RouterLink } from "react-router-dom";
 // Mui
@@ -32,6 +34,7 @@ export default function SignUp() {
 
   return (
     <Container
+     className={style.container}
       component="main"
       maxWidth="xs"
       sx={{

@@ -25,6 +25,16 @@
   min-height: calc(100vh - 111px);
 
 
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  input {
+    background-color: #fff;
+    font-size: 18px;
+  }
+
+
   h1 {
     font-size: 24px;
     color: #20bcd5;

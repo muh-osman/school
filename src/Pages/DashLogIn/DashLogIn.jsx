@@ -1,3 +1,5 @@
+import style from "../../Layout/layout.module.scss";
+
 // React router
 import { Link as RouterLink } from "react-router-dom";
 // Mui
@@ -41,7 +43,12 @@ export default function DashLogIn() {
   };
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
+    <Grid
+      className={style.container}
+      container
+      component="main"
+      sx={{ height: "100vh" }}
+    >
       <Grid
         item
         xs={false}

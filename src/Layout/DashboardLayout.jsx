@@ -1,4 +1,5 @@
-
+import style from "./DashboardLayout.module.scss";
+//
 import * as React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -38,7 +39,6 @@ import CustomToast from "../Components/CustomToast ";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
-
   let { tableId } = useParams();
   // Cookie
   const [cookies, setCookie] = useCookies(["token", "verified"]);
@@ -103,6 +103,7 @@ function ResponsiveDrawer(props) {
         {pages.map((item) => {
           return (
             <ListItem
+              className={style.dash_btns}
               dir="ltr"
               key={item.id}
               disablePadding
@@ -111,22 +112,37 @@ function ResponsiveDrawer(props) {
               to={item.path}
               // selected={item.path === pathname}
               selected={
-                item.path === "/dashboard" && pathname === "/dashboard" ||
-                item.path === "/dashboard/tables" && pathname === "/dashboard/tables" ||
-                item.path === "/dashboard/profile" && pathname === "/dashboard/profile" ||
-
-                item.path === "/dashboard" && pathname === "/dashboard/add-teacher" ||
-                item.path === "/dashboard" && pathname === "/dashboard/edit-teacher" ||
-                item.path === "/dashboard" && pathname === "/dashboard/delete-teacher" ||
-
-                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/add-table" ||
-                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/edit-table" ||
-                item.path === "/dashboard/tables" && pathname === "/dashboard/tables/delete-table" ||
-                item.path === "/dashboard/tables" && pathname === `/dashboard/table/${tableId}`
+                (item.path === "/dashboard" && pathname === "/dashboard") ||
+                (item.path === "/dashboard/tables" &&
+                  pathname === "/dashboard/tables") ||
+                (item.path === "/dashboard/profile" &&
+                  pathname === "/dashboard/profile") ||
+                (item.path === "/dashboard" &&
+                  pathname === "/dashboard/add-teacher") ||
+                (item.path === "/dashboard" &&
+                  pathname === "/dashboard/edit-teacher") ||
+                (item.path === "/dashboard" &&
+                  pathname === "/dashboard/delete-teacher") ||
+                (item.path === "/dashboard/tables" &&
+                  pathname === "/dashboard/add-table") ||
+                (item.path === "/dashboard/tables" &&
+                  pathname === "/dashboard/edit-table") ||
+                (item.path === "/dashboard/tables" &&
+                  pathname === "/dashboard/delete-table") ||
+                (item.path === "/dashboard/tables" &&
+                  pathname === `/dashboard/table/${tableId}`)
               }
             >
-              <ListItemButton sx={{ color: "#757575" }}>
-                <ListItemText primary={item.title} />
+              <ListItemButton
+                sx={{
+                  fontFamily: '"Cairo", sans-serif !important',
+                  color: "#757575",
+                }}
+              >
+                <ListItemText
+                  sx={{ fontFamily: '"Cairo", sans-serif !important' }}
+                  primary={item.title}
+                />
 
                 <ListItemIcon sx={{ justifyContent: "flex-end" }}>
                   <Avatar
@@ -199,6 +215,7 @@ function ResponsiveDrawer(props) {
                 <CircularProgress sx={{ color: "#fbfbfb" }} size={24} />
               } // Customize the loader color here
               sx={{
+                fontFamily: '"Cairo", sans-serif !important',
                 backgroundColor: "#fbfbfb",
                 color: "#7431fa",
                 border: "1px solid #fbfbfb",

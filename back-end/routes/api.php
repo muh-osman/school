@@ -3,8 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\RowController;
+use App\Http\Controllers\CellController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SheetController;
+use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\TeacherController;
 
 
@@ -38,15 +42,47 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('teachers', TeacherController::class)->except(['index', 'show']);
 
-        // Route for getting all teachers that associated-with-user
-        Route::get('/teachers-associated-with-user/{user_id}', [TeacherController::class, 'index']);
+    // Route for getting all teachers that associated-with-user
+    Route::get('/teachers-associated-with-user/{user_id}', [TeacherController::class, 'index']);
 
-        // Route for getting a teacher by ID
-        Route::get('/teachers/{id}', [TeacherController::class, 'show']);
+    // Route for getting a teacher by ID
+    Route::get('/teachers/{id}', [TeacherController::class, 'show']);
 
-        // Search
-        Route::post('/teachers/search/{user_id}', [TeacherController::class, 'searchTeacherByName']);
+    // Search for teacher
+    Route::post('/teachers/search/{user_id}', [TeacherController::class, 'searchTeacherByName']);
+
+    // tables
+    Route::post('/tables', [SheetController::class, 'store']);
+    Route::put('/tables/{id}', [SheetController::class, 'update']);
+    Route::delete('/tables/{id}', [SheetController::class, 'destroy']);
+    Route::get('/tables-associated-with-user/{user_id}', [SheetController::class, 'index']);
+    Route::get('/tables/{id}', [SheetController::class, 'show']);
+    Route::post('/tables/search/{user_id}', [SheetController::class, 'searchTableByName']);
+
+    // Columns Table
+    Route::post('/columns', [ColumnController::class, 'store']);
+    Route::put('/columns/{id}', [ColumnController::class, 'update']);
+    Route::delete('/columns/{id}', [ColumnController::class, 'destroy']);
+    Route::get('/columns', [ColumnController::class, 'index']);
+    Route::get('/columns/{id}', [ColumnController::class, 'show']);
+
+    // Rows table
+    Route::post('/rows', [RowController::class, 'store']);
+    Route::put('/rows/{id}', [RowController::class, 'update']);
+    Route::delete('/rows/{id}', [RowController::class, 'destroy']);
+    Route::get('/rows', [RowController::class, 'index']);
+    Route::get('/rows/{id}', [RowController::class, 'show']);
+
+    // Cells table
+    Route::post('/cells', [CellController::class, 'store']);
+    Route::put('/cells/{id}', [CellController::class, 'update']);
+    Route::delete('/cells/{id}', [CellController::class, 'destroy']);
+    Route::get('/cells', [CellController::class, 'index']);
+    Route::get('/cells/{id}', [CellController::class, 'show']);
 });
+
+
+
 
 
 // Group for guest routes
@@ -65,7 +101,4 @@ Route::middleware('guest')->group(function () {
 
     // API route for resetting the password (http://localhost:8000/api/reset-password)
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
-
-
-
 });

@@ -5,15 +5,9 @@ import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-
 export default function Dashboard() {
-
-
   return (
     <div className={style.container}>
-
-
-
       <Stack
         sx={{ pt: 4, pb: 4, maxWidth: "617px", margin: "auto" }}
         spacing={2}
@@ -49,8 +43,6 @@ export default function Dashboard() {
           </Button>
         </Link>
       </Stack>
-
-
     </div>
   );
 }

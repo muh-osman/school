@@ -1,5 +1,15 @@
 .container {
   min-height: calc(100vh - 112px);
+
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  input {
+    background-color: #fff;
+    font-size: 18px;
+  }
 }
 
 .progressContainer {
