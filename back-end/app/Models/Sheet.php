@@ -13,7 +13,7 @@ class Sheet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'user_id'];
+    protected $fillable = ['name', 'description', 'private_link', 'public_link', 'user_id'];
 
     public function user()
     {

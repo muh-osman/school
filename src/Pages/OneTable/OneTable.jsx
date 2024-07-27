@@ -1,55 +1,63 @@
-import React, { useState, useEffect } from "react";
 import style from "./OneTable.module.scss";
+import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 // API
-import useGetTableData from "../../API/useGetTableDataApi";
+import useGetTableDataApi from "../../API/useGetTableDataApi";
 
 export default function OneTable() {
-  let { tableId } = useParams();
+  let { id } = useParams();
+  const editFormRef = useRef();
 
-  const { data: tableData, fetchStatus } = useGetTableData(tableId);
+  const { data: table, fetchStatus } = useGetTableDataApi(id);
 
-  const [editableData, setEditableData] = useState(tableData);
+  // console.log(table?.private_link);
+  // console.log(table?.public_link);
+
+  const [editFormData, setEditFormData] = useState({
+    name: "",
+    description: "",
+    private_link: "",
+    public_link: "",
+  });
 
   useEffect(() => {
-    setEditableData(tableData);
-  }, [tableData]);
+    if (table) {
+      setEditFormData((prevData) => ({
+        ...prevData,
+        name: table.name || "",
+        description: table.description || "",
+        private_link: table.private_link || "",
+        public_link: table.public_link || "",
+      }));
+    }
+  }, [table]);
 
-  const handleInputChange = (e, rowIndex, cellIndex) => {
-    const updatedData = { ...editableData };
-    updatedData.rows[rowIndex].cells[cellIndex].value = e.target.value;
-    setEditableData(updatedData);
-  };
+  // handle iframe url
+  const [src, setSrc] = useState("");
+  const [showIframe, setShowIframe] = useState(false);
 
-  const handleColumnChange = (e, columnIndex) => {
-    const updatedData = { ...editableData };
-    const newColumns = [...updatedData.columns];
-    const newRows = [...updatedData.rows];
+  useEffect(() => {
+    if (table) {
+      if (table?.public_link?.includes("amp;")) {
+        // Extract the src URL from the iframe string
+        let srcUrl = table?.public_link?.match(/src="([^"]+)"/)[1];
 
-    // Update the column name
-    newColumns[columnIndex].name = e.target.value;
+        // Remove 'amp;' from the src URL
+        srcUrl = srcUrl?.replace(/amp;/g, "");
 
-    // Reorder columns
-    newColumns.sort((a, b) => a.order - b.order);
+        // Replace 'headers=false' with 'headers=true' in the src URL
+        srcUrl = srcUrl?.replace("headers=false", "headers=true");
 
-    // Update the cells order based on the new column order
-    newRows.forEach((row) => {
-      row.cells.sort((a, b) => {
-        const cellA = a.order - 1; // Adjusting order to start from 0
-        const cellB = b.order - 1; // Adjusting order to start from 0
-        return newColumns[cellA].order - newColumns[cellB].order;
-      });
-    });
-
-    updatedData.columns = newColumns;
-    updatedData.rows = newRows;
-
-    setEditableData(updatedData);
-  };
-
-
+        setShowIframe(true);
+        setSrc(srcUrl);
+      }
+    }
+  }, [table]);
 
   return (
     <div className={style.container}>
@@ -59,64 +67,47 @@ export default function OneTable() {
         </div>
       )}
 
-      {editableData && (
-        <>
-          <h1>
-            <input
+      <Box
+        ref={editFormRef}
+        component="form"
+        noValidate
+        sx={{ m: "auto", mt: 3, mr: 4, ml: 4 }}
+      >
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
               type="text"
-              value={editableData?.name}
-              onChange={(e) =>
-                setEditableData({ ...editableData, name: e.target.value })
-              }
+              name="name"
+              required
+              value={editFormData.name}
+              variant="standard"
+              InputProps={{
+                style: { fontWeight: "800", fontSize: "24px" },
+              }}
             />
-          </h1>
-          <p>
-            <input
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
               type="text"
-              value={editableData?.description}
-              onChange={(e) =>
-                setEditableData({
-                  ...editableData,
-                  description: e.target.value,
-                })
-              }
+              name="description"
+              required
+              value={editFormData.description}
+              dir="rtl"
+              multiline
+              rows={3}
+              variant="standard"
             />
-          </p>
+          </Grid>
+        </Grid>
+      </Box>
 
-          <table dir="rtl" className="table table-striped">
-          <thead>
-  <tr>
-    <th>#</th>
-    {editableData.columns.sort((a, b) => a.order - b.order).map((column, columnIndex) => (
-      <th key={column.id} scope="col">
-        <input
-          type="text"
-          value={column.name}
-          onChange={(e) => handleColumnChange(e, columnIndex)}
-        />
-      </th>
-    ))}
-  </tr>
-</thead>
-<tbody>
-  {editableData.rows.sort((a, b) => a.order - b.order).map((row, rowIndex) => (
-    <tr key={row.id}>
-      <td>{rowIndex + 1}</td>
-      {row.cells.sort((a, b) => a.order - b.order).map((cell, cellIndex) => (
-        <td key={cell.id}>
-          <input
-            type="text"
-            value={cell.value}
-            onChange={(e) => handleInputChange(e, rowIndex, cellIndex)}
-          />
-        </td>
-      ))}
-    </tr>
-  ))}
-</tbody>
-
-          </table>
-        </>
+      {table && showIframe && (
+        <iframe
+          style={{ width: "100%", height: "calc(100vh - 94px)" }}
+          src={src}
+        ></iframe>
       )}
     </div>
   );

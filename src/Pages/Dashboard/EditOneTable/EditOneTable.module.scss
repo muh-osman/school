@@ -1,24 +1,37 @@
 .container {
-    min-height: calc(100vh - 112px);
+  min-height: calc(100vh - 112px);
+  margin-right: -24px;
+  margin-left: -24px;
+  margin-bottom: -24px;
+
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  textarea {
+    background-color: #f9fbfd;
+  }
+
+}
+
+.progressContainer {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+
+  span {
+    height: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-height: calc(100vh - 104px);
   }
 
   .progressContainer {
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-
-    span {
-      height: 2px !important;
-    }
+    top: 56px;
   }
-
-  @media (max-width: 600px) {
-    .container {
-      min-height: calc(100vh - 104px);
-    }
-
-    .progressContainer {
-      top: 56px;
-    }
-  }
+}

@@ -195,9 +195,9 @@ class TeacherController extends Controller
 
         // Search for teachers by name associated with the specified user_id
         $teachers = Teacher::where('user_id', $user_id)
-                            ->where('name', 'like', $name . '%')
-                            ->with('user')
-                            ->get();
+            ->where('name', 'like', $name . '%')
+            ->with('user')
+            ->get();
 
         if ($teachers->isEmpty()) {
             return response()->json([

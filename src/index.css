@@ -1,0 +1,14 @@
+* {
+  font-family: "Cairo", sans-serif !important;
+}
+
+.customHeader {
+  /* background-color: #f0f0f0; */
+  color: #333; /* Example text color */
+  font-weight: 900; /* Example font weight */
+}
+
+iframr {
+  width: 100% !important;
+  height: 100%;
+}

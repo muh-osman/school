@@ -47,9 +47,25 @@ class SheetController extends Controller
     public function update(Request $request, $id)
     {
         $sheet = Sheet::findOrFail($id);
-        $sheet->update($request->all());
-        return response()->json($sheet, 200);
+
+        $sheet->name = $request->input('name');
+        $sheet->description = $request->input('description');
+
+        // Check if private_link and public_link are present in the request before updating
+        if ($request->has('private_link')) {
+            $sheet->private_link = $request->input('private_link');
+        }
+
+        if ($request->has('public_link')) {
+            $sheet->public_link = $request->input('public_link');
+        }
+
+        $sheet->save();
+
+        return response()->json(['message' => 'Sheet updated successfully'], 200);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -61,7 +77,7 @@ class SheetController extends Controller
         return response()->json(null, 204);
     }
 
-        /**
+    /**
      * Search for a table by name.
      */
     public function searchTableByName(Request $request, $user_id)
@@ -70,9 +86,9 @@ class SheetController extends Controller
 
         // Search for tables by name associated with the specified user_id
         $tables = Sheet::where('user_id', $user_id)
-                            ->where('name', 'like', $name . '%')
-                            ->with('user')
-                            ->get();
+            ->where('name', 'like', $name . '%')
+            ->with('user')
+            ->get();
 
         if ($tables->isEmpty()) {
             return response()->json([

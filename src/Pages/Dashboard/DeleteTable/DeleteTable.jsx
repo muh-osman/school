@@ -35,9 +35,10 @@ export default function DeleteTable() {
       // Reset the form after successful submission
       deleteFormRef.current.reset();
       setSelectedTableId("");
-      toast.success(data.message);
+      toast.success("Deleted successfully");
     }
   }, [isSuccess]);
+
 
   return (
     <div className={style.container}>

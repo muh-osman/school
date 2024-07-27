@@ -45,7 +45,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="teacher/:id" element={<OneTeacher />} />
           <Route path="tables" element={<Tables />} />
-          <Route path="table/:tableId" element={<OneTable />} />
+          <Route path="table/:id" element={<OneTable />} />
         </Route>
 
         <Route element={<NotAuth />}>

@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('sheets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Add user_id column
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('private_link')->nullable();
+            $table->text('public_link')->nullable();
+
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

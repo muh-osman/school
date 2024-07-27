@@ -39,7 +39,8 @@ import CustomToast from "../Components/CustomToast ";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
-  let { tableId } = useParams();
+  let { id } = useParams();
+
   // Cookie
   const [cookies, setCookie] = useCookies(["token", "verified"]);
 
@@ -130,7 +131,7 @@ function ResponsiveDrawer(props) {
                 (item.path === "/dashboard/tables" &&
                   pathname === "/dashboard/delete-table") ||
                 (item.path === "/dashboard/tables" &&
-                  pathname === `/dashboard/table/${tableId}`)
+                  pathname === `/dashboard/edit-table/${id}`)
               }
             >
               <ListItemButton
@@ -276,7 +277,7 @@ function ResponsiveDrawer(props) {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: "#fbfbfb",
+          backgroundColor: "#f9fbfd",
           position: "relative",
         }}
       >

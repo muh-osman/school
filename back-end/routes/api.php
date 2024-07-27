@@ -53,7 +53,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // tables
     Route::post('/tables', [SheetController::class, 'store']);
-    Route::put('/tables/{id}', [SheetController::class, 'update']);
+    // Route::post('/tables/{id}', [SheetController::class, 'update']);
+    Route::match(['patch'], '/tables/{id}', [SheetController::class, 'update']);
     Route::delete('/tables/{id}', [SheetController::class, 'destroy']);
     Route::get('/tables-associated-with-user/{user_id}', [SheetController::class, 'index']);
     Route::get('/tables/{id}', [SheetController::class, 'show']);
