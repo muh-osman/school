@@ -22,7 +22,7 @@ export default function EditOneTable() {
   const { data: table, fetchStatus } = useGetTableDataApi(id);
   const { mutate, data, isPending, isSuccess } = useEditTableApi();
 
-  console.log(table?.private_link);
+  // console.log(table?.private_link);
   // console.log(table?.public_link);
 
   const [editFormData, setEditFormData] = useState({
@@ -68,10 +68,21 @@ export default function EditOneTable() {
 
         mutate(data);
       }
-    }, 500); // 1000 milliseconds = 1 second
+    }, 2000); // 1000 milliseconds = 1 second
 
     setTimer(newTimer);
   };
+
+  //
+  const [showIframe, setShowIframe] = useState(false);
+
+  useEffect(() => {
+    if (table) {
+      if (table?.public_link?.includes("spreadsheets")) {
+        setShowIframe(true);
+      }
+    }
+  }, [table]);
 
   return (
     <div className={style.container}>
@@ -168,7 +179,7 @@ export default function EditOneTable() {
         </Grid>
       </Box>
 
-      {table && (
+      {table && showIframe && (
         <iframe
           style={{ width: "100%", height: "calc(100vh - 94px)" }}
           src={table?.private_link}

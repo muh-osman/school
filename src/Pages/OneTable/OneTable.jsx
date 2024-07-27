@@ -53,8 +53,8 @@ export default function OneTable() {
         // Replace 'headers=false' with 'headers=true' in the src URL
         srcUrl = srcUrl?.replace("headers=false", "headers=true");
 
-        setShowIframe(true);
         setSrc(srcUrl);
+        setShowIframe(true);
       }
     }
   }, [table]);
