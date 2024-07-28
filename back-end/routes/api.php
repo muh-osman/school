@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SheetController;
 use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AlbumController;
 
 
 
@@ -80,6 +81,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/cells/{id}', [CellController::class, 'destroy']);
     Route::get('/cells', [CellController::class, 'index']);
     Route::get('/cells/{id}', [CellController::class, 'show']);
+
+
+    // Album
+    // Route::get('albums', [AlbumController::class, 'index']);
+    // Route::get('albums/{id}', [AlbumController::class, 'show']);
+    Route::post('albums', [AlbumController::class, 'store']);
+    // Route::put('albums/{id}', [AlbumController::class, 'update']);
+    Route::delete('albums/{id}', [AlbumController::class, 'destroy']);
+
 });
 
 

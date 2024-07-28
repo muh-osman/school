@@ -1,9 +1,12 @@
 import style from "./OneTeacher.module.scss";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+// import ImageList from "@mui/material/ImageList";
+// import ImageListItem from "@mui/material/ImageListItem";
 // Cookies
 import { useCookies } from "react-cookie";
 // Api
@@ -17,7 +20,11 @@ export default function OneTeacher() {
 
   let { id } = useParams();
 
-  const { data: teacher, fetchStatus } = useGetTeacherByIdApi({ id });
+  const { data: teacher, fetchStatus, refetch } = useGetTeacherByIdApi({ id });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className={style.container}>
@@ -33,19 +40,19 @@ export default function OneTeacher() {
         <>
           {/* <!-- header start --> */}
           <div id="header" className={`${style.section} ${style.header}`}>
-            {teacher?.image && (
+            {teacher?.teacher?.image && (
               <div>
                 <img
-                  src={`${imgUrl}${teacher.image.replace(
+                  src={`${imgUrl}${teacher.teacher.image.replace(
                     "/storage/images",
                     ""
                   )}`}
-                  alt={teacher.name}
+                  alt={teacher.teacher.name}
                   className={style.img_circle}
                 />
               </div>
             )}
-            <p>{teacher?.name}</p>
+            <p>{teacher?.teacher?.name}</p>
           </div>
 
           {/* <!-- About Me section start --> */}
@@ -53,7 +60,7 @@ export default function OneTeacher() {
             <h1>
               <span>نبذة شخصية</span>
             </h1>
-            <p style={{ whiteSpace: "pre-wrap" }}>{teacher?.bio}</p>
+            <p style={{ whiteSpace: "pre-wrap" }}>{teacher?.teacher?.bio}</p>
           </div>
 
           {/* <!-- My Skills section start --> */}
@@ -74,7 +81,7 @@ export default function OneTeacher() {
               spacing={1}
               justifyContent="center"
             >
-              {teacher?.skills?.split("-").map((skill, index) => (
+              {teacher?.teacher?.skills?.split("-").map((skill, index) => (
                 <Chip
                   key={index}
                   label={skill}
@@ -91,17 +98,34 @@ export default function OneTeacher() {
             </Stack>
           </div>
 
+          {/* <!-- Images album --> */}
+          {teacher?.albums.length > 0 && (
+            <div className={style.section}>
+              <h1>
+                <span>البوم الصور</span>
+              </h1>
+
+              <div className={style.img_container}>
+                {teacher?.albums?.map(({ id, image }) => (
+                  <div className={style.img_box} key={id}>
+                    <img src={image} alt={id} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* <!-- Contacts section start --> */}
 
-          {teacher?.email && (
+          {teacher?.teacher?.email && (
             <div className={style.section} style={{ marginBottom: "8px" }}>
               <h1>
                 <span>تواصل</span>
               </h1>
 
               <div className={style.contact}>
-                <a dir="ltr" href={`mailto:${teacher?.email}`}>
-                  {teacher?.email}
+                <a dir="ltr" href={`mailto:${teacher?.teacher?.email}`}>
+                  {teacher?.teacher?.email}
                 </a>
               </div>
             </div>

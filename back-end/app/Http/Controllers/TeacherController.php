@@ -14,6 +14,7 @@ use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Album;
 
 
 class TeacherController extends Controller
@@ -96,7 +97,14 @@ class TeacherController extends Controller
     {
         try {
             $teacher = Teacher::with('user')->findOrFail($id);
-            return response()->json($teacher);
+            $albums = Album::where('teacher_id', $id)->get();
+
+            $data = [
+                'teacher' => $teacher,
+                'albums' => $albums,
+            ];
+
+            return response()->json($data);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',

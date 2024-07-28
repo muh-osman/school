@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
+use App\Models\Album;
 
 
 class Teacher extends Model
@@ -24,5 +25,10 @@ class Teacher extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function albums()
+    {
+        return $this->hasMany(Album::class);
     }
 }

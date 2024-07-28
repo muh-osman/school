@@ -24,7 +24,6 @@
   margin: 0;
   min-height: calc(100vh - 111px);
 
-
   & * {
     font-family: "Cairo", sans-serif !important;
   }
@@ -33,7 +32,6 @@
     background-color: #fff;
     font-size: 18px;
   }
-
 
   h1 {
     font-size: 24px;
@@ -72,7 +70,6 @@
   background-color: transparent;
   border: none;
   box-shadow: none;
-
 
   div {
     width: 350px;
@@ -121,5 +118,29 @@
     &:hover {
       color: blue;
     }
+  }
+}
+
+.img_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.img_box {
+  width: 275px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+
+  img {
+    width: 275px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    transition: 0.3s;
   }
 }

@@ -2,14 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 // API
 import API from "./Api";
 
-export default function useGetTeacherByIdApi({ id }) {
-  const fetchTeachersById = async () => {
-    const res = await API.get(`api/teachers/${id}`);
-    return res.data;
-  };
+export const fetchTeachersById = async (id) => {
+  const res = await API.get(`api/teachers/${id}`);
+  return res.data;
+};
 
+export default function useGetTeacherByIdApi({ id }) {
   return useQuery({
     queryKey: ["teacher", id],
-    queryFn: () => fetchTeachersById(),
+    queryFn: () => fetchTeachersById(id),
+    enabled: false,
   });
 }
