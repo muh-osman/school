@@ -8,6 +8,7 @@ import {
 import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
+import About from "./Pages/About/About";
 import OneTeacher from "./Pages/OneTeacher/OneTeacher";
 import Tables from "./Pages/Tables/Tables";
 import LogIn from "./Pages/LogIn/LogIn";
@@ -46,6 +47,8 @@ export default function App() {
           <Route path="teacher/:id" element={<OneTeacher />} />
           <Route path="tables" element={<Tables />} />
           <Route path="table/:id" element={<OneTable />} />
+
+          <Route path="about" element={<About />} />
         </Route>
 
         <Route element={<NotAuth />}>

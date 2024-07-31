@@ -1,20 +1,18 @@
+// src/GoogleSheets.js
 import React, { useEffect, useState } from "react";
 
 const CLIENT_ID =
   "620639308450-961345nhugc44d051nmobqnij0f5s05k.apps.googleusercontent.com";
 const API_KEY = "AIzaSyAojW5tsIUDKWBfneZSXIove4B_l87_e6w";
-const DISCOVERY_DOCS = [
-  "https://sheets.googleapis.com/$discovery/rest?version=v4",
-  "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
-];
-const SCOPES =
-  "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive";
+const DISCOVERY_DOC =
+  "https://sheets.googleapis.com/$discovery/rest?version=v4";
+const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 const GoogleSheets = () => {
+  const [content, setContent] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [sheetTitle, setSheetTitle] = useState("New Spreadsheet");
   const [loading, setLoading] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [content, setContent] = useState("");
 
   useEffect(() => {
     const gapiLoaded = () => {
@@ -24,7 +22,7 @@ const GoogleSheets = () => {
     const initializeGapiClient = async () => {
       await window.gapi.client.init({
         apiKey: API_KEY,
-        discoveryDocs: DISCOVERY_DOCS,
+        discoveryDocs: [DISCOVERY_DOC],
       });
       maybeEnableButtons();
       checkExistingToken(); // Check for existing token on load
@@ -48,15 +46,10 @@ const GoogleSheets = () => {
 
     const checkExistingToken = () => {
       const token = localStorage.getItem("access_token");
-      const expiresAt = localStorage.getItem("expires_at");
-      const now = new Date().getTime() / 1000; // Current time in seconds
-
-      if (token && expiresAt > now) {
+      if (token) {
         window.gapi.client.setToken({ access_token: token });
         setIsAuthorized(true);
-      } else {
-        // Token is expired or doesn't exist, prompt for authorization
-        handleAuthClick();
+        listMajors(); // Optionally fetch data immediately
       }
     };
 
@@ -65,10 +58,31 @@ const GoogleSheets = () => {
         throw resp;
       }
       localStorage.setItem("access_token", resp.access_token); // Store token
-      // Store the expiration time
-      const expiresAt = new Date().getTime() / 1000 + resp.expires_in; // Current time + expires_in
-      localStorage.setItem("expires_at", expiresAt); // Store expiration time
       setIsAuthorized(true);
+      await listMajors();
+    };
+
+    const listMajors = async () => {
+      let response;
+      try {
+        response = await window.gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
+          range: "Class Data!A2:E",
+        });
+      } catch (err) {
+        setContent(err.message);
+        return;
+      }
+      const range = response.result;
+      if (!range || !range.values || range.values.length === 0) {
+        setContent("No values found.");
+        return;
+      }
+      const output = range.values.reduce(
+        (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        "Name, Major:\n"
+      );
+      setContent(output);
     };
 
     // Load the Google API scripts
@@ -93,25 +107,9 @@ const GoogleSheets = () => {
     };
   }, []);
 
-  // Function to check if the token is expired
-  const isTokenExpired = (token) => {
-    const now = new Date().getTime() / 1000; // Current time in seconds
-    return token.expires_at <= now; // Check if the token's expiration time is less than or equal to now
-  };
-
-  // Define the createNewSheet function
+  // Define the createNewSheet function outside of useEffect
   const createNewSheet = async () => {
     setLoading(true);
-
-    // Check if the token is valid
-    const token = window.gapi.client.getToken();
-    if (!token || isTokenExpired(token)) {
-      // Request a new token
-      window.tokenClient.requestAccessToken({ prompt: "consent" });
-      setLoading(false);
-      return; // Exit the function until the new token is obtained
-    }
-
     const resource = {
       properties: {
         title: sheetTitle,
@@ -122,30 +120,11 @@ const GoogleSheets = () => {
         resource,
       });
       const spreadsheetId = response.result.spreadsheetId;
-      await setSheetPermissions(spreadsheetId); // Set permissions
-      setContent(`${spreadsheetId}`);
+      setContent(`Created new spreadsheet with ID: ${spreadsheetId}`);
     } catch (err) {
       setContent(`Error creating spreadsheet: ${err.message}`);
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Function to set permissions for the spreadsheet
-  const setSheetPermissions = async (spreadsheetId) => {
-    const permissionResource = {
-      role: "writer",
-      type: "anyone",
-    };
-    try {
-      const response = await window.gapi.client.drive.permissions.create({
-        fileId: spreadsheetId,
-        resource: permissionResource,
-        fields: "id", // Request the ID of the created permission
-      });
-      console.log("Permission ID:", response.result.id); // Log the permission ID
-    } catch (err) {
-      console.error(`Error setting permissions: ${err.message}`); // Log the error message
     }
   };
 
@@ -165,7 +144,6 @@ const GoogleSheets = () => {
       window.google.accounts.oauth2.revoke(token.access_token);
       window.gapi.client.setToken("");
       localStorage.removeItem("access_token"); // Remove token from storage
-      localStorage.removeItem("expires_at"); // Remove expiration time from storage
       setContent("");
       setIsAuthorized(false);
     }
