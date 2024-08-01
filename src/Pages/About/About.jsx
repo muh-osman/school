@@ -174,6 +174,7 @@ const GoogleSheets = () => {
   return (
     <div>
       <h1>Sheets API Quickstart</h1>
+
       <button
         id="authorize_button"
         onClick={handleAuthClick}
@@ -181,25 +182,30 @@ const GoogleSheets = () => {
       >
         Authorize
       </button>
+
       {isAuthorized && (
         <>
           <button id="signout_button" onClick={handleSignoutClick}>
             Sign Out
           </button>
+
           <input
             type="text"
             value={sheetTitle}
             onChange={(e) => setSheetTitle(e.target.value)}
             placeholder="Enter sheet title"
           />
+
           <button onClick={createNewSheet} disabled={loading}>
             {loading ? "Creating..." : "Create New Google Sheet"}
           </button>
         </>
       )}
+
       <pre id="content" style={{ whiteSpace: "pre-wrap" }}>
         {content}
       </pre>
+
     </div>
   );
 };

@@ -22,7 +22,6 @@ export default function OneTable() {
     name: "",
     description: "",
     private_link: "",
-    public_link: "",
   });
 
   useEffect(() => {
@@ -32,30 +31,15 @@ export default function OneTable() {
         name: table.name || "",
         description: table.description || "",
         private_link: table.private_link || "",
-        public_link: table.public_link || "",
       }));
     }
   }, [table]);
 
-  // handle iframe url
-  const [src, setSrc] = useState("");
+  // Show iframe
   const [showIframe, setShowIframe] = useState(false);
-
   useEffect(() => {
-    if (table) {
-      if (table?.public_link?.includes("amp;")) {
-        // Extract the src URL from the iframe string
-        let srcUrl = table?.public_link?.match(/src="([^"]+)"/)[1];
-
-        // Remove 'amp;' from the src URL
-        srcUrl = srcUrl?.replace(/amp;/g, "");
-
-        // Replace 'headers=false' with 'headers=true' in the src URL
-        srcUrl = srcUrl?.replace("headers=false", "headers=true");
-
-        setSrc(srcUrl);
-        setShowIframe(true);
-      }
+    if (table && fetchStatus === "idle") {
+      setShowIframe(true);
     }
   }, [table]);
 
@@ -71,7 +55,7 @@ export default function OneTable() {
         ref={editFormRef}
         component="form"
         noValidate
-        sx={{ m: "auto", mt: 3, mr: 4, ml: 4 }}
+        sx={{ m: "auto", mt: 0, mr: 0, ml: 0 }}
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -96,7 +80,7 @@ export default function OneTable() {
               value={editFormData.description}
               dir="rtl"
               multiline
-              rows={3}
+              rows={1}
               variant="standard"
             />
           </Grid>
@@ -105,8 +89,12 @@ export default function OneTable() {
 
       {table && showIframe && (
         <iframe
-          style={{ width: "100%", height: "calc(100vh - 94px)" }}
-          src={src}
+          style={{
+            width: "100%",
+            height: "calc(100vh - 94px)",
+            marginTop: "16px",
+          }}
+          src={`https://docs.google.com/spreadsheets/d/${editFormData.private_link}/preview`}
         ></iframe>
       )}
     </div>

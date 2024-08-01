@@ -6,9 +6,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // API
 import useGetTableDataApi from "../../../API/useGetTableDataApi";
 import { useEditTableApi } from "../../../API/useEditTableApi";
@@ -17,19 +14,15 @@ export default function EditOneTable() {
   let { id } = useParams();
   const editFormRef = useRef();
 
-  const [more, setMore] = useState(false);
-
   const { data: table, fetchStatus } = useGetTableDataApi(id);
   const { mutate, data, isPending, isSuccess } = useEditTableApi();
 
   // console.log(table?.private_link);
-  // console.log(table?.public_link);
 
   const [editFormData, setEditFormData] = useState({
     name: "",
     description: "",
     private_link: "",
-    public_link: "",
   });
 
   useEffect(() => {
@@ -39,7 +32,6 @@ export default function EditOneTable() {
         name: table.name || "",
         description: table.description || "",
         private_link: table.private_link || "",
-        public_link: table.public_link || "",
       }));
     }
   }, [table]);
@@ -73,17 +65,6 @@ export default function EditOneTable() {
     setTimer(newTimer);
   };
 
-  //
-  const [showIframe, setShowIframe] = useState(false);
-
-  useEffect(() => {
-    if (table) {
-      if (table?.public_link?.includes("spreadsheets")) {
-        setShowIframe(true);
-      }
-    }
-  }, [table]);
-
   return (
     <div className={style.container}>
       {fetchStatus === "fetching" ||
@@ -98,7 +79,7 @@ export default function EditOneTable() {
         component="form"
         noValidate
         // onSubmit={handleSubmit}
-        sx={{ m: "auto", mt: 3, mr: 4, ml: 4 }}
+        sx={{ m: "auto", mt: 0, mr: 4, ml: 4 }}
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -114,18 +95,6 @@ export default function EditOneTable() {
                 style: { fontWeight: "800", fontSize: "24px" },
               }}
             />
-
-            <IconButton
-              aria-label="more"
-              color="primary"
-              onClick={() => setMore((prev) => !prev)}
-              style={{
-                transition: "0.2s",
-                transform: more ? "rotate(180deg)" : "rotate(0deg)",
-              }}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
           </Grid>
 
           <Grid item xs={12}>
@@ -139,50 +108,18 @@ export default function EditOneTable() {
               onChange={handleInputChange}
               dir="rtl"
               multiline
-              rows={3}
+              rows={1}
               variant="standard"
             />
           </Grid>
-
-          {more && (
-            <>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="رابط المدير"
-                  type="text"
-                  name="private_link"
-                  required
-                  disabled={isPending}
-                  value={editFormData.private_link}
-                  onChange={handleInputChange}
-                  variant="standard"
-                  dir="ltr"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="رابط الضيف"
-                  type="text"
-                  name="public_link"
-                  required
-                  disabled={isPending}
-                  value={editFormData.public_link}
-                  onChange={handleInputChange}
-                  variant="standard"
-                  dir="ltr"
-                />
-              </Grid>
-            </>
-          )}
         </Grid>
       </Box>
 
-      {table && showIframe && (
+      {/* E.g. https://docs.google.com/spreadsheets/d/${table?.private_link}/edit?usp=sharing */}
+      {table && (
         <iframe
-          style={{ width: "100%", height: "calc(100vh - 94px)" }}
-          src={table?.private_link}
+          style={{ width: "100%", height: "calc(100vh - 197px)" }}
+          src={`https://docs.google.com/spreadsheets/d/${table?.private_link}/edit?usp=sharing`}
         ></iframe>
       )}
     </div>

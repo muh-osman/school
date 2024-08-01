@@ -1,4 +1,3 @@
-// src/GoogleSheets.js
 import React, { useEffect, useState } from "react";
 
 const CLIENT_ID =
@@ -9,10 +8,10 @@ const DISCOVERY_DOC =
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 const GoogleSheets = () => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState([]);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [sheetTitle, setSheetTitle] = useState("New Spreadsheet");
-  const [loading, setLoading] = useState(false);
+  const [sheetTitle, setSheetTitle] = useState("");
+  const [sheetDescreption, setSheetDescreption] = useState("");
 
   useEffect(() => {
     const gapiLoaded = () => {
@@ -70,12 +69,12 @@ const GoogleSheets = () => {
           range: "Class Data!A2:E",
         });
       } catch (err) {
-        setContent(err.message);
+        console.log(err);
         return;
       }
       const range = response.result;
       if (!range || !range.values || range.values.length === 0) {
-        setContent("No values found.");
+        console.log("No values found.");
         return;
       }
       const output = range.values.reduce(
@@ -106,27 +105,6 @@ const GoogleSheets = () => {
       document.body.removeChild(script2);
     };
   }, []);
-
-  // Define the createNewSheet function outside of useEffect
-  const createNewSheet = async () => {
-    setLoading(true);
-    const resource = {
-      properties: {
-        title: sheetTitle,
-      },
-    };
-    try {
-      const response = await window.gapi.client.sheets.spreadsheets.create({
-        resource,
-      });
-      const spreadsheetId = response.result.spreadsheetId;
-      setContent(`Created new spreadsheet with ID: ${spreadsheetId}`);
-    } catch (err) {
-      setContent(`Error creating spreadsheet: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Define the handleAuthClick function
   const handleAuthClick = () => {
@@ -159,25 +137,17 @@ const GoogleSheets = () => {
       >
         Authorize
       </button>
-      {isAuthorized && (
-        <>
-          <button id="signout_button" onClick={handleSignoutClick}>
-            Sign Out
-          </button>
-          <input
-            type="text"
-            value={sheetTitle}
-            onChange={(e) => setSheetTitle(e.target.value)}
-            placeholder="Enter sheet title"
-          />
-          <button onClick={createNewSheet} disabled={loading}>
-            {loading ? "Creating..." : "Create New Google Sheet"}
-          </button>
-        </>
-      )}
+
+      {/* {isAuthorized && (
+        <button id="signout_button" onClick={handleSignoutClick}>
+          Sign Out
+        </button>
+      )} */}
+
       <pre id="content" style={{ whiteSpace: "pre-wrap" }}>
         {content}
       </pre>
+
     </div>
   );
 };
