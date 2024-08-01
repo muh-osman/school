@@ -91,7 +91,7 @@ export default function OneTable() {
         <iframe
           style={{
             width: "100%",
-            height: "calc(100vh - 94px)",
+            height: "calc(100vh - 244px)",
             marginTop: "16px",
           }}
           src={`https://docs.google.com/spreadsheets/d/${editFormData.private_link}/preview`}
