@@ -1,0 +1,26 @@
+.container {
+  min-height: calc(100vh - 112px);
+
+  @media (max-width: 600px) {
+    min-height: calc(100vh - 104px);
+  }
+
+  .box {
+    width: 75%;
+    margin: auto;
+
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 48px;
+  }
+
+  h6 {
+    line-height: 1.5;
+  }
+}

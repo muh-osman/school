@@ -1,6 +1,7 @@
 import style from "./OneTeacher.module.scss";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Copyright from "../../Components/Copyright";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 import Chip from "@mui/material/Chip";
@@ -34,7 +35,9 @@ export default function OneTeacher() {
         </div>
       )}
 
-      {!cookies.token && <h3>يرجى تسجيل الدخول لعرض النتائج</h3>}
+      {!cookies.token && (
+        <h3 style={{ textAlign: "center" }}>يرجى تسجيل الدخول لعرض النتائج</h3>
+      )}
 
       {teacher && (
         <>
@@ -130,6 +133,15 @@ export default function OneTeacher() {
               </div>
             </div>
           )}
+
+          <div
+            style={{
+              marginTop: "24px",
+              width: "100%",
+            }}
+          >
+            <Copyright />
+          </div>
         </>
       )}
     </div>

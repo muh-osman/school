@@ -16,9 +16,13 @@ import { useAddTebleApi } from "../../../API/useAddTebleApi";
 import { toast } from "react-toastify";
 //
 
-const CLIENT_ID =
-  "620639308450-961345nhugc44d051nmobqnij0f5s05k.apps.googleusercontent.com";
-const API_KEY = "AIzaSyAojW5tsIUDKWBfneZSXIove4B_l87_e6w";
+// Google api credintial
+const clientId = process.env.REACT_APP_CLIENT_ID;
+const apiKey = process.env.REACT_APP_API_KEY;
+
+const CLIENT_ID = clientId;
+const API_KEY = apiKey;
+
 const DISCOVERY_DOCS = [
   "https://sheets.googleapis.com/$discovery/rest?version=v4",
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -27,6 +31,12 @@ const SCOPES =
   "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive";
 
 export default function AddTable() {
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "userId",
+    "access_token",
+    "expires_at",
+  ]);
+
   const [addFormData, setAddFormData] = useState({
     name: "",
     description: "",
@@ -67,8 +77,8 @@ export default function AddTable() {
     };
 
     const checkExistingToken = () => {
-      const token = localStorage.getItem("access_token");
-      const expiresAt = localStorage.getItem("expires_at");
+      const token = cookies.access_token;
+      const expiresAt = cookies.expires_at;
       const now = new Date().getTime() / 1000; // Current time in seconds
 
       if (token && expiresAt > now) {
@@ -84,10 +94,10 @@ export default function AddTable() {
       if (resp.error) {
         throw resp;
       }
-      localStorage.setItem("access_token", resp.access_token); // Store token
+      setCookie("access_token", resp.access_token, { path: "/" }); // Store token in cookies
       // Store the expiration time
       const expiresAt = new Date().getTime() / 1000 + resp.expires_in; // Current time + expires_in
-      localStorage.setItem("expires_at", expiresAt); // Store expiration time
+      setCookie("expires_at", expiresAt, { path: "/" }); // Store expiration time in cookies
       setIsAuthorized(true);
     };
 
@@ -191,15 +201,14 @@ export default function AddTable() {
     if (token) {
       window.google.accounts.oauth2.revoke(token.access_token);
       window.gapi.client.setToken("");
-      localStorage.removeItem("access_token"); // Remove token from storage
-      localStorage.removeItem("expires_at"); // Remove expiration time from storage
+      removeCookie("access_token"); // Remove token from storage
+      removeCookie("expires_at"); // Remove expiration time from storage
       // setContent("");
       setIsAuthorized(false);
     }
   };
 
   // Cookie
-  const [cookies, setCookie] = useCookies(["userId"]);
   const [spinerTimer, setSpinerTimer] = useState(true);
 
   const addFormRef = useRef();

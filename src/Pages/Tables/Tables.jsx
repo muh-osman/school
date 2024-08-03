@@ -13,6 +13,7 @@
 import style from "./Tables.module.scss";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Copyright from "../../Components/Copyright";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 import Card from "@mui/material/Card";
@@ -71,7 +72,7 @@ export default function Tables() {
   return (
     <div className={style.container}>
       {!cookies.token ? (
-        <h3>يرجى تسجيل الدخول لعرض النتائج</h3>
+        <h3 style={{ textAlign: "center" }}>يرجى تسجيل الدخول لعرض النتائج</h3>
       ) : (
         <>
           {fetchStatus === "fetching" && (
@@ -128,7 +129,9 @@ export default function Tables() {
           </div>
 
           {/* {tables === undefined && <h3>جاري التحميل...</h3>} */}
-          {tables?.length === 0 && <h3>لا يوجد بيانات لعرضها</h3>}
+          {tables?.length === 0 && (
+            <h3 style={{ textAlign: "center" }}>لا يوجد بيانات لعرضها</h3>
+          )}
 
           <div className={style.card_container}>
             {tables !== undefined &&
@@ -159,6 +162,15 @@ export default function Tables() {
           </div>
         </>
       )}
+
+      <div
+        style={{
+          marginTop: "24px",
+          width: "100%",
+        }}
+      >
+        <Copyright />
+      </div>
     </div>
   );
 }

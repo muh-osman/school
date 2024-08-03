@@ -1,4 +1,5 @@
 import style from "./DashboardLayout.module.scss";
+import Copyright from "../Components/Copyright";
 //
 import * as React from "react";
 import PropTypes from "prop-types";
@@ -162,7 +163,16 @@ function ResponsiveDrawer(props) {
           );
         })}
 
-        {/* <Divider /> */}
+        <Divider />
+
+        <div
+          style={{
+            marginTop: "24px",
+            width: "100%",
+          }}
+        >
+          <Copyright />
+        </div>
       </List>
     </div>
   );

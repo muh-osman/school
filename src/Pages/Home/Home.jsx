@@ -1,6 +1,7 @@
 import style from "./Home.module.scss";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Copyright from "../../Components/Copyright";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 import Card from "@mui/material/Card";
@@ -57,7 +58,9 @@ export default function Home() {
 
   return (
     <div className={style.container}>
-      {!cookies.token ? <h3>يرجى تسجيل الدخول لعرض النتائج</h3> : (
+      {!cookies.token ? (
+        <h3 style={{ textAlign: "center" }}>يرجى تسجيل الدخول لعرض النتائج</h3>
+      ) : (
         <>
           {fetchStatus === "fetching" && (
             <div className={style.progressContainer}>
@@ -114,7 +117,9 @@ export default function Home() {
           </div>
 
           {/* {teachers === undefined && <h3>جاري التحميل...</h3>} */}
-          {teachers?.length === 0 && <h3>لا يوجد بيانات لعرضها</h3>}
+          {teachers?.length === 0 && (
+            <h3 style={{ textAlign: "center" }}>لا يوجد بيانات لعرضها</h3>
+          )}
 
           <div className={style.card_container}>
             {teachers !== undefined &&
@@ -147,6 +152,15 @@ export default function Home() {
           </div>
         </>
       )}
+
+      <div
+        style={{
+          marginTop: "24px",
+          width: "100%",
+        }}
+      >
+        <Copyright />
+      </div>
     </div>
   );
 }
