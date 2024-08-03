@@ -1,6 +1,6 @@
 import style from "./PrivacyPolicy.module.scss";
 import { Link } from "react-router-dom";
-import { Copyright } from "@mui/icons-material";
+import Copyright from "../../Components/Copyright";
 
 export default function PrivacyPolicy() {
   return (
