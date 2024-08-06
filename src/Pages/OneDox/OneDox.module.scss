@@ -1,0 +1,30 @@
+.progressContainer {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+
+  span {
+    height: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-height: calc(100vh - 103px);
+  }
+
+  .progressContainer {
+    top: 56px;
+  }
+}
+
+.container {
+  font-size: 19px;
+  margin: 0;
+  min-height: calc(100vh - 111px);
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+}

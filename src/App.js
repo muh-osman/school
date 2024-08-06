@@ -9,9 +9,11 @@ import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
-// import About from "./Pages/About/About";
+import About from "./Pages/About/About";
 import OneTeacher from "./Pages/OneTeacher/OneTeacher";
 import Tables from "./Pages/Tables/Tables";
+import Dox from "./Pages/Dox/Dox";
+import OneDox from "./Pages/OneDox/OneDox";
 import LogIn from "./Pages/LogIn/LogIn";
 import DashLogIn from "./Pages/DashLogIn/DashLogIn";
 import SignUp from "./Pages/SignUp/SignUp";
@@ -33,6 +35,12 @@ import EditTable from "./Pages/Dashboard/EditTable/EditTable";
 import EditOneTable from "./Pages/Dashboard/EditOneTable/EditOneTable";
 import DeleteTable from "./Pages/Dashboard/DeleteTable/DeleteTable";
 
+import DashDox from "./Pages/Dashboard/Dox/Dox";
+import AddDox from "./Pages/Dashboard/AddDox/AddDox";
+import EditDox from "./Pages/Dashboard/EditDox/EditDox";
+import EditOneDox from "./Pages/Dashboard/EditOneDox/EditOneDox";
+import DeleteDox from "./Pages/Dashboard/DeleteDox/DeleteDox";
+
 import Profile from "./Pages/Dashboard/Profile/Profile";
 import NotFound from "./Pages/NotFound/NotFound";
 import OneTable from "./Pages/OneTable/OneTable";
@@ -46,8 +54,12 @@ export default function App() {
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
           <Route path="teacher/:id" element={<OneTeacher />} />
+
           <Route path="tables" element={<Tables />} />
           <Route path="table/:id" element={<OneTable />} />
+
+          <Route path="dox" element={<Dox />} />
+          <Route path="dox/:id" element={<OneDox />} />
 
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
         </Route>
@@ -76,6 +88,12 @@ export default function App() {
             <Route path="edit-table" element={<EditTable />} />
             <Route path="edit-table/:id" element={<EditOneTable />} />
             <Route path="delete-table" element={<DeleteTable />} />
+
+            <Route path="dox" element={<DashDox />} />
+            <Route path="add-dox" element={<AddDox />} />
+            <Route path="edit-dox" element={<EditDox />} />
+            <Route path="edit-dox/:id" element={<EditOneDox />} />
+            <Route path="delete-dox" element={<DeleteDox />} />
 
             <Route path="profile" element={<Profile />} />
           </Route>

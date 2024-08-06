@@ -74,4 +74,5 @@ class PostController extends Controller
             'message' => "Post deleted successfully"
         ]);
     }
+
 }

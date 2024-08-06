@@ -41,11 +41,11 @@ const pages = [
     title: "الجداول",
     path: "tables",
   },
-  // {
-  //   id: 3,
-  //   title: "About",
-  //   path: "about",
-  // },
+  {
+    id: 3,
+    title: "المستندات",
+    path: "dox",
+  },
 ];
 
 function DrawerAppBar(props) {

@@ -7,10 +7,11 @@ use App\Http\Controllers\RowController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\SheetController;
 use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\DoxController;
 
 
 
@@ -90,6 +91,21 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::put('albums/{id}', [AlbumController::class, 'update']);
     Route::delete('albums/{id}', [AlbumController::class, 'destroy']);
 
+    // Dox
+    // Route to get all dox titles
+    Route::get('doxes-title-associated-with-user/{user_id}', [DoxController::class, 'index']);
+    // Route to get a single dox by ID
+    Route::get('doxes/{id}', [DoxController::class, 'show']);
+    // Route to create a new dox
+    Route::post('doxes', [DoxController::class, 'store']);
+    // Route to update an existing dox
+    // Route::post('doxes/{id}', [DoxController::class, 'update']);
+    Route::match(['patch'], '/doxes/{id}', [DoxController::class, 'update']);
+    // Route to delete a dox
+    Route::delete('doxes/{id}', [DoxController::class, 'destroy']);
+    // search
+    Route::post('/doxes/search/{user_id}', [DoxController::class, 'searchDoxByName']);
+
 });
 
 
@@ -113,3 +129,6 @@ Route::middleware('guest')->group(function () {
     // API route for resetting the password (http://localhost:8000/api/reset-password)
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
 });
+
+
+

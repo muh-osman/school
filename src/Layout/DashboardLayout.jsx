@@ -17,16 +17,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CircularProgress from "@mui/material/CircularProgress";
+import ArticleIcon from "@mui/icons-material/Article";
 
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 // Image logo
 import logo from "../Assets/Images/logo.png";
 // MUI icons
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import DeleteIcon from "@mui/icons-material/Delete";
+import TableChartIcon from "@mui/icons-material/TableChart";
+// import DeleteIcon from "@mui/icons-material/Delete";
 // React router
 import { Link, useLocation, Outlet, useParams } from "react-router-dom";
 // Cookies
@@ -50,16 +51,22 @@ function ResponsiveDrawer(props) {
       id: 1,
       title: "المعرض",
       path: "/dashboard",
-      icon: <DashboardIcon sx={{ color: "#757575" }} />,
+      icon: <PersonIcon sx={{ color: "#757575" }} />,
     },
     {
       id: 2,
       title: "الجداول",
       path: "/dashboard/tables",
-      icon: <AddBoxIcon sx={{ color: "#757575" }} />,
+      icon: <TableChartIcon sx={{ color: "#757575" }} />,
     },
     {
       id: 3,
+      title: "المستندات",
+      path: "/dashboard/dox",
+      icon: <ArticleIcon sx={{ color: "#757575" }} />,
+    },
+    {
+      id: 4,
       title: "الملف الشخصي",
       path: "/dashboard/profile",
       icon: <AutoFixHighIcon sx={{ color: "#757575" }} />,
@@ -117,6 +124,8 @@ function ResponsiveDrawer(props) {
                 (item.path === "/dashboard" && pathname === "/dashboard") ||
                 (item.path === "/dashboard/tables" &&
                   pathname === "/dashboard/tables") ||
+                (item.path === "/dashboard/dox" &&
+                  pathname === "/dashboard/dox") ||
                 (item.path === "/dashboard/profile" &&
                   pathname === "/dashboard/profile") ||
                 (item.path === "/dashboard" &&
@@ -132,7 +141,15 @@ function ResponsiveDrawer(props) {
                 (item.path === "/dashboard/tables" &&
                   pathname === "/dashboard/delete-table") ||
                 (item.path === "/dashboard/tables" &&
-                  pathname === `/dashboard/edit-table/${id}`)
+                  pathname === `/dashboard/edit-table/${id}`) ||
+                (item.path === "/dashboard/dox" &&
+                  pathname === "/dashboard/add-dox") ||
+                (item.path === "/dashboard/dox" &&
+                  pathname === "/dashboard/edit-dox") ||
+                (item.path === "/dashboard/dox" &&
+                  pathname === "/dashboard/delete-dox") ||
+                (item.path === "/dashboard/dox" &&
+                  pathname === `/dashboard/edit-dox/${id}`)
               }
             >
               <ListItemButton
