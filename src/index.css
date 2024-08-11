@@ -13,6 +13,22 @@ iframr {
   height: 100%;
 }
 
+/* Carousel */
+.carousel {
+  height: calc(100vh - 112px);
+  overflow: hidden;
+  background-color: #000;
+}
 
-/*  */
+.carousel-inner {
+  height: 100%;
+}
 
+.carousel-item {
+  height: 100%;
+}
+
+.carousel-item img {
+  height: 100% !important;
+  margin: auto;
+}

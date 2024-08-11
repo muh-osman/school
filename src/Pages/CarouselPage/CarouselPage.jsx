@@ -43,26 +43,20 @@ export default function CarouselPage() {
         </div>
       )}
 
-      <div className={style.carousel_box}>
-        {albumImages && albumImages.length > 0 && (
-          <Carousel
-            className={style.carousel}
-            activeIndex={activeIndex}
-            onSelect={setActiveIndex}
-            interval={null} // Disable autoplay
-          >
-            {albumImages.map(({ id, image }) => (
-              <Carousel.Item key={id}>
-                <img
-                  className="d-block w-100"
-                  src={image}
-                  alt={`Slide ${id}`}
-                />
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        )}
-      </div>
+      {albumImages && albumImages.length > 0 && (
+        <Carousel
+          className="carousel"
+          activeIndex={activeIndex}
+          onSelect={setActiveIndex}
+          interval={null} // Disable autoplay
+        >
+          {albumImages.map(({ id, image }) => (
+            <Carousel.Item key={id}>
+              <img className="d-block" src={image} alt={`Slide ${id}`} />
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 }
