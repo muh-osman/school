@@ -9,8 +9,9 @@ import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
-import About from "./Pages/About/About";
+// import About from "./Pages/About/About";
 import OneTeacher from "./Pages/OneTeacher/OneTeacher";
+import CarouselPage from "./Pages/CarouselPage/CarouselPage";
 import Tables from "./Pages/Tables/Tables";
 import Dox from "./Pages/Dox/Dox";
 import OneDox from "./Pages/OneDox/OneDox";
@@ -54,6 +55,7 @@ export default function App() {
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
           <Route path="teacher/:id" element={<OneTeacher />} />
+          <Route path="carousel/:teacherId/:imageId" element={<CarouselPage />} />
 
           <Route path="tables" element={<Tables />} />
           <Route path="table/:id" element={<OneTable />} />

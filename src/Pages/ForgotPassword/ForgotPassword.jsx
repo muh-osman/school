@@ -51,7 +51,7 @@ export default function ForgotPassword() {
           <VpnKeyIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-          Forgot Password
+          نسيت كلمة المرور
         </Typography>
         <Box
           ref={formRef}
@@ -66,7 +66,7 @@ export default function ForgotPassword() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="البريد الالكتروني"
                 name="email"
                 type="email"
                 autoComplete="email"
@@ -85,7 +85,7 @@ export default function ForgotPassword() {
             disabled={isSuccess}
             sx={{ mt: 3, mb: 2, transition: "0.1s" }}
           >
-            Continue
+            استمرار
           </LoadingButton>
         </Box>
       </Box>

@@ -51,9 +51,21 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Album $album)
+    public function show($teacher_id)
     {
-        //
+        try {
+            // Retrieve albums for the given teacher_id
+            $albums = Album::where('teacher_id', $teacher_id)->get();
+
+            // Check if albums exist
+            if ($albums->isEmpty()) {
+                return response()->json(['message' => 'No albums found for this teacher.'], 404);
+            }
+
+            return response()->json($albums);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong while retrieving the albums'], 500);
+        }
     }
 
     /**

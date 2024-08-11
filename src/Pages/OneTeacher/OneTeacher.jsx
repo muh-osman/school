@@ -1,6 +1,7 @@
 import style from "./OneTeacher.module.scss";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Copyright from "../../Components/Copyright";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
@@ -111,7 +112,9 @@ export default function OneTeacher() {
               <div className={style.img_container}>
                 {teacher?.albums?.map(({ id, image }) => (
                   <div className={style.img_box} key={id}>
-                    <img src={image} alt={id} />
+                    <Link to={`/carousel/${teacher?.teacher?.id}/${id}`}>
+                      <img src={image} alt={id} />
+                    </Link>
                   </div>
                 ))}
               </div>

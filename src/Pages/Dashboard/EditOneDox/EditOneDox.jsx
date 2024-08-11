@@ -2,7 +2,8 @@ import style from "./EditOneDox.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 // react-quill
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
+import imageResize from "quill-image-resize-module-react";
 import "quill/dist/quill.snow.css";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
@@ -16,7 +17,33 @@ import { toast } from "react-toastify";
 import useGetDoxDataApi from "../../../API/useGetDoxDataApi";
 import { useEditDoxApi } from "../../../API/useEditDoxApi";
 
+Quill.register("modules/imageResize", imageResize);
+
+// Custom keyboard handler
+const Keyboard = Quill.import("modules/keyboard");
+class CustomKeyboard extends Keyboard {
+  constructor(quill, options) {
+    super(quill, options);
+    this.quill = quill;
+
+    // Add custom handler for Enter key
+    this.addBinding({ key: 13 }, this.handleEnter.bind(this));
+  }
+
+  handleEnter(range, context) {
+    const currentFormat = this.quill.getFormat(range.index);
+    this.quill.insertText(range.index, "\n", "user");
+    if (currentFormat.header) {
+      this.quill.format("header", currentFormat.header);
+    }
+    this.quill.setSelection(range.index + 1);
+    return false; // Prevent default behavior
+  }
+}
+
 export default function EditOneDox() {
+  const quillRef = useRef(null); // Create a ref for ReactQuill
+
   const location = useLocation();
   const { createdDoxData } = location.state || {}; // Use optional chaining to avoid errors if state is undefined
   // console.log(createdDoxData);
@@ -49,6 +76,13 @@ export default function EditOneDox() {
       [{ font: [] }], // Font options
       [{ align: [] }], // Text alignment
     ],
+    keyboard: {
+      bindings: CustomKeyboard, // Use the custom keyboard module
+    },
+    imageResize: {
+      // Optional: You can customize the image resize options here
+      modules: ["Resize", "DisplaySize"], // Enable resize and display size options
+    },
   };
 
   // Title
@@ -137,6 +171,7 @@ export default function EditOneDox() {
       </Box>
 
       <ReactQuill
+        ref={quillRef} // Assign the ref to ReactQuill
         value={value}
         onChange={setValue}
         modules={modules}

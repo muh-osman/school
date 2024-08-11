@@ -1,52 +1,79 @@
 import style from "./AddDox.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-// react-quill
-import ReactQuill from "react-quill";
+
+import ReactQuill, { Quill } from 'react-quill';
+import imageResize from 'quill-image-resize-module-react';
 import "quill/dist/quill.snow.css";
-// MUI
+
 import LinearProgress from "@mui/material/LinearProgress";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
-// Toastify
 import { toast } from "react-toastify";
-// Cookies
 import { useCookies } from "react-cookie";
-// API
 import { useAddDoxApi } from "../../../API/useAddDoxApi";
+
+Quill.register('modules/imageResize', imageResize);
+
+// Custom keyboard handler
+const Keyboard = Quill.import("modules/keyboard");
+class CustomKeyboard extends Keyboard {
+  constructor(quill, options) {
+    super(quill, options);
+    this.quill = quill;
+
+    // Add custom handler for Enter key
+    this.addBinding({ key: 13 }, this.handleEnter.bind(this));
+  }
+
+  handleEnter(range, context) {
+    const currentFormat = this.quill.getFormat(range.index);
+    this.quill.insertText(range.index, "\n", "user");
+    if (currentFormat.header) {
+      this.quill.format("header", currentFormat.header);
+    }
+    this.quill.setSelection(range.index + 1);
+    return false; // Prevent default behavior
+  }
+}
 
 export default function AddDox() {
   const [value, setValue] = useState("");
+  const quillRef = useRef(null); // Create a ref for ReactQuill
 
   const modules = {
     toolbar: [
-      [{ header: [1, 2, false] }], // Header options
-      ["bold", "italic", "underline", "strike"], // Text formatting
-      [{ list: "ordered" }, { list: "bullet" }], // Lists
-      [{ script: "sub" }, { script: "super" }], // Subscript and superscript
-      [{ indent: "-1" }, { indent: "+1" }], // Indent
-      [{ direction: "rtl" }], // Text direction
-      ["link", "image"], // Links, images, and videos
-      ["clean"], // Remove formatting button
-      [{ color: [] }, { background: [] }], // Text color and background color
-      [{ font: [] }], // Font options
-      [{ align: [] }], // Text alignment
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ direction: "rtl" }],
+      ["link", "image"],
+      ["clean"],
+      [{ color: [] }, { background: [] }],
+      [{ font: [] }],
+      [{ align: [] }],
     ],
+    keyboard: {
+      bindings: CustomKeyboard, // Use the custom keyboard module
+    },
+    imageResize: {
+      // Optional: You can customize the image resize options here
+      modules: ["Resize", "DisplaySize"], // Enable resize and display size options
+    },
   };
 
-  // Title
   const [title, setTitle] = useState("");
   const { mutate, data: createdDoxData, isPending, isSuccess } = useAddDoxApi();
-  // Cookie
   const [cookies, setCookie] = useCookies(["userId"]);
   const userId = cookies.userId;
 
   const formRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // required input
     const validate = formRef.current.reportValidity();
     if (!validate) return;
 
@@ -69,8 +96,6 @@ export default function AddDox() {
   useEffect(() => {
     if (isSuccess === true) {
       toast.success("Saved");
-
-      // Pass createdDoxData as state
       navigate(`/dashboard/edit-dox/${createdDoxData.id}`, {
         replace: true,
         state: { createdDoxData },
@@ -126,7 +151,7 @@ export default function AddDox() {
               variant="contained"
               disableRipple
               loading={isPending}
-              sx={{ mr: 4, transition: "0.1s", width: "100%" }} // Add margin-left for spacing
+              sx={{ mr: 4, transition: "0.1s", width: "100%" }}
             >
               حفظ
             </LoadingButton>
@@ -135,15 +160,13 @@ export default function AddDox() {
       </Box>
 
       <ReactQuill
+        ref={quillRef} // Assign the ref to ReactQuill
         value={value}
         onChange={setValue}
         modules={modules}
         theme="snow"
         readOnly={isPending}
       />
-
-      {/* <h2>Output</h2> */}
-      {/* <div dangerouslySetInnerHTML={{ __html: editorHtml }} /> */}
     </div>
   );
 }

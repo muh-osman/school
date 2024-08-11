@@ -40,6 +40,19 @@
   flex-wrap: wrap;
 }
 
+.card {
+  border: 0.5px solid blue;
+}
+
+.content_box {
+  padding: 16px;
+  height: 286px;
+  overflow: hidden;
+  & * {
+    font-size: 14px;
+  }
+}
+
 // Search
 .search_container {
   margin-bottom: 32px;

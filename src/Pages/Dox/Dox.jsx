@@ -1,4 +1,4 @@
-import style from './Dox.module.scss';
+import style from "./Dox.module.scss";
 //
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -15,8 +15,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
-// Sheet Logo
-import doxLogo from "../../Assets/Images/docs-logo.png";
 // Cookies
 import { useCookies } from "react-cookie";
 // Api
@@ -33,11 +31,7 @@ export default function Dox() {
   const [searchQuery, setSearchQuery] = useState("");
   const [timer, setTimer] = useState(null);
 
-  const {
-    mutate,
-    data: searchResultData,
-    isPending,
-  } = useSearchDoxByNameApi();
+  const { mutate, data: searchResultData, isPending } = useSearchDoxByNameApi();
 
   const handleInputChange = (e) => {
     setSearchQuery("");
@@ -126,21 +120,23 @@ export default function Dox() {
             {doxesTitle !== undefined &&
               doxesTitle?.length !== 0 &&
               doxesTitle.map((doxTitle) => (
-                <Card sx={{ width: 300 }} key={doxTitle.id}>
+                <Card
+                  sx={{ width: 258 }}
+                  key={doxTitle.id}
+                  className={style.card}
+                >
                   <CardActionArea
                     component={Link}
                     to={`/dox/${doxTitle.id}`}
                     sx={{ height: "100%" }}
                   >
-                    <CardMedia
-                      component="img"
-                      height="265"
-                      image={doxLogo}
-                      alt={doxTitle.title}
-                      sx={{ objectFit: "contain" }}
+                    <div
+                      className={style.content_box}
+                      dangerouslySetInnerHTML={{ __html: doxTitle.brief }}
                     />
-
-                    <CardContent>
+                    <CardContent
+                      sx={{ backgroundColor: "#fbfbfb", height: "100%" }}
+                    >
                       <Typography variant="h5" component="div">
                         {doxTitle.title}
                       </Typography>

@@ -1,0 +1,68 @@
+import style from "./CarouselPage.module.scss";
+import { useParams } from "react-router-dom";
+// MUI
+import LinearProgress from "@mui/material/LinearProgress";
+// API
+import useGetAlbumImagesApi from "../../API/useGetAlbumImagesApi";
+//
+import Carousel from "react-bootstrap/Carousel";
+import { useEffect, useState } from "react";
+
+export default function CarouselPage() {
+  let { teacherId, imageId } = useParams();
+  const { data: albumImages, fetchStatus } = useGetAlbumImagesApi(teacherId);
+
+  // State to manage the active index
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (albumImages && albumImages.length > 0) {
+      // Convert imageId to the same type as the IDs in albumImages
+      const idToFind = Number(imageId); // Assuming IDs are numbers
+      // console.log("Looking for imageId:", idToFind);
+
+      // Find the index of the image with the matching imageId
+      const index = albumImages.findIndex((image) => image.id === idToFind);
+      // console.log("Found index:", index);
+
+      if (index !== -1) {
+        setActiveIndex(index); // Set the active index to the found index
+      }
+    }
+  }, [albumImages, imageId]);
+
+  // Debugging: Log the active index and album images
+  // console.log("Active Index:", activeIndex);
+  // console.log("Album Images:", albumImages);
+
+  return (
+    <div className={style.container}>
+      {fetchStatus === "fetching" && (
+        <div className={style.progressContainer}>
+          <LinearProgress />
+        </div>
+      )}
+
+      <div className={style.carousel_box}>
+        {albumImages && albumImages.length > 0 && (
+          <Carousel
+            className={style.carousel}
+            activeIndex={activeIndex}
+            onSelect={setActiveIndex}
+            interval={null} // Disable autoplay
+          >
+            {albumImages.map(({ id, image }) => (
+              <Carousel.Item key={id}>
+                <img
+                  className="d-block w-100"
+                  src={image}
+                  alt={`Slide ${id}`}
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        )}
+      </div>
+    </div>
+  );
+}

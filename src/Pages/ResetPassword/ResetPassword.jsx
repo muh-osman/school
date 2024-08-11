@@ -75,7 +75,7 @@ export default function ResetPassword() {
           <PasswordIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-          Reset Password
+          إعادة تعيين كلمة المرور
         </Typography>
         <Box
           ref={formRef}
@@ -90,7 +90,7 @@ export default function ResetPassword() {
                 required
                 fullWidth
                 id="password"
-                label="New password"
+                label="كلمة المرور الجديدة"
                 type="password"
                 name="password"
                 autoComplete="new-password"
@@ -103,7 +103,7 @@ export default function ResetPassword() {
                 required
                 fullWidth
                 id="confirm-password"
-                label="Confirm new password"
+                label="تأكيد كلمة المرور الجديدة"
                 type="password"
                 name="password_confirmation"
                 autoComplete="password"
@@ -121,7 +121,7 @@ export default function ResetPassword() {
             disabled={isSuccess}
             sx={{ mt: 3, mb: 2, transition: "0.1s" }}
           >
-            Reset Password
+            إعادة تعيين
           </LoadingButton>
         </Box>
       </Box>

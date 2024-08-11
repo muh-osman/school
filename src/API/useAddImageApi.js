@@ -26,6 +26,8 @@ export const useAddImageApi = (id) => {
         queryKey: ["teacher", id],
         queryFn: () => fetchTeachersById(id),
       });
+
+      toast.success("Uploaded successfully");
     },
 
     onError: (err) => {

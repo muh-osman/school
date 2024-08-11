@@ -142,5 +142,9 @@
     object-fit: cover;
     object-position: center;
     transition: 0.3s;
+
+    &:hover {
+      scale: 1.1;
+    }
   }
 }

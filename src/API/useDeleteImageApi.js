@@ -23,6 +23,8 @@ export const useDeleteImageApi = (selectedTeacherId) => {
         queryKey: ["teacher", id],
         queryFn: () => fetchTeachersById(id),
       });
+
+      toast.success("Deleted successfully");
     },
 
     onError: (err) => {

@@ -9,18 +9,32 @@ use Illuminate\Support\Facades\Validator;
 
 class DoxController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index($user_id)
-    {
-        // Retrieve only the id and title of the doxes associated with the specified user_id
-        $doxes = Dox::where('user_id', $user_id)
-            ->select('id', 'title') // Select only the id and title fields
-            ->get();
+/**
+ * Display a listing of the resource.
+ */
+public function index($user_id)
+{
+    // Retrieve the doxes associated with the specified user_id
+    $doxes = Dox::where('user_id', $user_id)
+        ->select('id', 'title', 'content') // Select id, title, and content fields
+        ->get();
 
-        return response()->json($doxes);
-    }
+    // Map through the doxes to create a brief version of the content
+    $doxesBrief = $doxes->map(function ($dox) {
+        // Limit the content length to a certain number of characters
+        $briefContent = mb_substr($dox->content, 0, 1000); // Adjust the length as needed
+
+        return [
+            'id' => $dox->id,
+            'title' => $dox->title,
+            'brief' => $briefContent // Keep HTML tags in the brief content
+        ];
+    });
+
+    return response()->json($doxesBrief);
+}
+
+
 
     /**
      * Store a newly created resource in storage.

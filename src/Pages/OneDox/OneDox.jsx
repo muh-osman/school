@@ -50,22 +50,17 @@ export default function OneDox() {
       >
         <Grid container>
           <Grid item>
-            <TextField
-              type="text"
-              name="title"
-              placeholder="العنوان"
-              required
-              fullWidth
-              value={title}
-              variant="standard"
-              InputProps={{
-                style: {
-                  fontWeight: "800",
-                  fontSize: "24px",
-                  backgroundColor: "#f9fbfd",
-                },
+            <h1
+              style={{
+                fontWeight: "800",
+                fontSize: "24px",
+                backgroundColor: "#f9fbfd",
+                paddingBottom: "12px",
+                borderBottom: "1px solid #000",
               }}
-            />
+            >
+              {title}
+            </h1>
           </Grid>
         </Grid>
       </Box>
