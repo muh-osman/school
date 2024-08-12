@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('doxes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users'); // Foreign key to users
-            $table->string('title'); // Title of the document
-            $table->mediumText('content'); // Rich text content (HTML)
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('title');
+            $table->text('bio');
+            $table->longText('content');
             $table->timestamps();
         });
     }

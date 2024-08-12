@@ -9,30 +9,18 @@ use Illuminate\Support\Facades\Validator;
 
 class DoxController extends Controller
 {
-/**
- * Display a listing of the resource.
- */
-public function index($user_id)
-{
-    // Retrieve the doxes associated with the specified user_id
-    $doxes = Dox::where('user_id', $user_id)
-        ->select('id', 'title', 'content') // Select id, title, and content fields
-        ->get();
+    /**
+     * Display a listing of the resource.
+     */
+    public function index($user_id)
+    {
+        // Retrieve only the id and title of the doxes associated with the specified user_id
+        $doxes = Dox::where('user_id', $user_id)
+            ->select('id', 'title') // Select only the id and title fields
+            ->get();
 
-    // Map through the doxes to create a brief version of the content
-    $doxesBrief = $doxes->map(function ($dox) {
-        // Limit the content length to a certain number of characters
-        $briefContent = mb_substr($dox->content, 0, 1000); // Adjust the length as needed
-
-        return [
-            'id' => $dox->id,
-            'title' => $dox->title,
-            'brief' => $briefContent // Keep HTML tags in the brief content
-        ];
-    });
-
-    return response()->json($doxesBrief);
-}
+        return response()->json($doxes);
+    }
 
 
 
@@ -43,6 +31,7 @@ public function index($user_id)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
+            'bio' => 'required|string',
             'content' => 'required|string',
         ]);
 
@@ -53,6 +42,7 @@ public function index($user_id)
         $dox = Dox::create([
             'user_id' => auth()->id(), // Assuming the user is authenticated
             'title' => $request->title,
+            'bio' => $request->bio,
             'content' => $request->content,
         ]);
 
@@ -87,6 +77,7 @@ public function index($user_id)
 
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
+            'bio' => 'sometimes|required|string',
             'content' => 'sometimes|required|string',
         ]);
 
@@ -95,7 +86,7 @@ public function index($user_id)
         }
 
         // Update the dox with the provided data
-        $dox->update($request->only('title', 'content'));
+        $dox->update($request->only('title', 'bio', 'content'));
 
         return response()->json($dox);
     }
