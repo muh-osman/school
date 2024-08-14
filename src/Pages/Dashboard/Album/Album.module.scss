@@ -1,0 +1,78 @@
+.container {
+  min-height: calc(100vh - 112px);
+
+  & * {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+  input {
+    background-color: #fff;
+    font-size: 18px;
+  }
+}
+
+.progressContainer {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+
+  span {
+    height: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-height: calc(100vh - 104px);
+  }
+
+  .progressContainer {
+    top: 56px;
+  }
+}
+
+.img_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.img_box {
+  width: 150px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+
+  &:hover img {
+    filter: grayscale(1);
+    transition: 0.3s;
+  }
+  &:hover .del_icon {
+    opacity: 1;
+    transition: 0.3s;
+  }
+
+  img {
+    width: 150px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    transition: 0.3s;
+  }
+
+  .del_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: red;
+    transition: 0.3s;
+    opacity: 0;
+  }
+}

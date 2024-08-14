@@ -22,11 +22,8 @@ export default function OneTeacher() {
 
   let { id } = useParams();
 
-  const { data: teacher, fetchStatus, refetch } = useGetTeacherByIdApi({ id });
+  const { data: teacher, fetchStatus } = useGetTeacherByIdApi({ id });
 
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <div className={style.container}>

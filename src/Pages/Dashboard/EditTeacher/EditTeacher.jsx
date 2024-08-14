@@ -1,6 +1,8 @@
 import style from "./EditTeacher.module.scss";
 // React
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 // MUI
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -8,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
+import Button from "@mui/material/Button";
 // Api
 import useGetAllTeachersApi from "../../../API/useGetAllTeachersApi";
 import { useEditTeacherApi } from "../../../API/useEditTeacherApi";
@@ -22,6 +25,7 @@ export default function EditTeacher() {
     bio: "",
     skills: "",
     image: "",
+    email: "",
   });
 
   const { data: teachers, fetchStatus } = useGetAllTeachersApi();
@@ -46,6 +50,7 @@ export default function EditTeacher() {
       setEditFormData({
         name: selectedTeacherData.name,
         bio: selectedTeacherData.bio,
+        email: selectedTeacherData.email || "",
         skills: selectedTeacherData.skills,
         // image: selectedTeacherData.image,
       });
@@ -85,6 +90,11 @@ export default function EditTeacher() {
     });
 
     mutate({ selectedTeacherId, formData });
+  };
+
+  const navigate = useNavigate();
+  const addImagesToAlbum = () => {
+    navigate(`album/${selectedTeacherId}`);
   };
 
   return (
@@ -181,10 +191,11 @@ export default function EditTeacher() {
                   onChange={handleInputChange}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
+
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="البريد الالكتروني"
+                  label="البريد الالكتروني (اختياري)"
                   type="email"
                   name="email"
                   required
@@ -193,10 +204,11 @@ export default function EditTeacher() {
                   onChange={handleInputChange}
                   dir="ltr"
                 />
-              </Grid> */}
+              </Grid>
 
               <Grid item xs={12}>
                 <TextField
+                  label="الصورة الشخصية"
                   fullWidth
                   type="file"
                   name="image"
@@ -208,6 +220,17 @@ export default function EditTeacher() {
             </>
           )}
         </Grid>
+
+        {selectedTeacherId && (
+          <Button
+            onClick={addImagesToAlbum}
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 3 }}
+          >
+            اضافة البوم صور
+          </Button>
+        )}
 
         <LoadingButton
           type="submit"

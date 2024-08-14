@@ -11,6 +11,5 @@ export default function useGetTeacherByIdApi({ id }) {
   return useQuery({
     queryKey: ["teacher", id],
     queryFn: () => fetchTeachersById(id),
-    enabled: false,
   });
 }
