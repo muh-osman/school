@@ -195,7 +195,7 @@ export default function EditTeacher() {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="البريد الالكتروني (اختياري)"
+                  label="البريد الالكتروني"
                   type="email"
                   name="email"
                   required
