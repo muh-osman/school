@@ -14,10 +14,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Copyright from "../../Components/Copyright";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // API
 import { useSignUpApi } from "../../API/useSignUpApi";
 
 export default function SignUp() {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPin, setShowPin] = React.useState(false);
   const formRef = React.useRef();
 
   const { mutate, isPending } = useSignUpApi();
@@ -34,7 +40,7 @@ export default function SignUp() {
 
   return (
     <Container
-     className={style.container}
+      className={style.container}
       component="main"
       maxWidth="xs"
       sx={{
@@ -75,7 +81,7 @@ export default function SignUp() {
                 autoComplete="email"
                 autoFocus
                 required
-                disabled={isPending} // Disable the input field if the form has been submitted
+                disabled={isPending}
               />
             </Grid>
             <Grid item xs={12}>
@@ -83,22 +89,46 @@ export default function SignUp() {
                 fullWidth
                 name="password"
                 label="كلمة المرور"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="new-password"
                 required
-                disabled={isPending} // Disable the input field if the form has been submitted
+                disabled={isPending}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="pin"
-              label="رمز دخول لوحة التحكم"
-              type="password"
-              disabled={isPending}
-            />
+              <TextField
+                required
+                fullWidth
+                name="pin"
+                label="رمز دخول لوحة التحكم"
+                type={showPin ? "text" : "password"}
+                disabled={isPending}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPin((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPin ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </Grid>
           </Grid>
 

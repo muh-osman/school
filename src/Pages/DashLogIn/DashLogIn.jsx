@@ -27,6 +27,7 @@ import dashBg from "../../Assets/Images/dashBg.webp";
 
 export default function DashLogIn() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showPin, setShowPin] = React.useState(false);
 
   const formRef = React.useRef();
 
@@ -106,10 +107,22 @@ export default function DashLogIn() {
               fullWidth
               name="password"
               label="كلمة المرور"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               disabled={isPending}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             <TextField
@@ -118,8 +131,20 @@ export default function DashLogIn() {
               fullWidth
               name="pin"
               label="رمز الدخول"
-              type="password"
+              type={showPin ? "text" : "password"}
               disabled={isPending}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPin((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPin ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             <LoadingButton
