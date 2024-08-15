@@ -111,6 +111,9 @@ export default function DashLogIn() {
               id="password"
               autoComplete="current-password"
               disabled={isPending}
+              InputLabelProps={{
+                shrink: true, // This keeps the label fixed
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -133,6 +136,9 @@ export default function DashLogIn() {
               label="رمز الدخول"
               type={showPin ? "text" : "password"}
               disabled={isPending}
+              InputLabelProps={{
+                shrink: true, // This keeps the label fixed
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

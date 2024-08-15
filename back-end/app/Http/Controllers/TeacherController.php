@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Album;
+use Illuminate\Support\Facades\File;
 
 
 class TeacherController extends Controller
@@ -177,6 +178,25 @@ class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher)
     {
+
+        // Delete the images of associated albums
+        $albums = Album::where('teacher_id', $teacher->id)->get();
+        foreach ($albums as $album) {
+            if ($album->image) {
+                // Extract the filename from the image URL
+                $filename = basename($album->image);
+                $imagePath = public_path('images/' . $filename); // Construct the full path to the image
+
+                // Check if the file exists and delete it
+                if (file_exists($imagePath)) {
+                    unlink($imagePath); // Delete the file
+                }
+            }
+            // Delete the album record
+            $album->delete();
+        }
+
+
         // Delete the image file if it exists
         if ($teacher->image) {
             $imagePath = str_replace('/storage', '/public', $teacher->image);

@@ -109,6 +109,9 @@ export default function LogIn() {
               id="password"
               autoComplete="current-password"
               disabled={isPending}
+              InputLabelProps={{
+                shrink: true, // This keeps the label fixed
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

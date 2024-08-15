@@ -94,6 +94,9 @@ export default function SignUp() {
                 autoComplete="new-password"
                 required
                 disabled={isPending}
+                InputLabelProps={{
+                  shrink: true, // This keeps the label fixed
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -116,6 +119,9 @@ export default function SignUp() {
                 label="رمز دخول لوحة التحكم"
                 type={showPin ? "text" : "password"}
                 disabled={isPending}
+                InputLabelProps={{
+                  shrink: true, // This keeps the label fixed
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
