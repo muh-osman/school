@@ -104,14 +104,15 @@ export default function AddDox() {
   };
 
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (isSuccess === true) {
+    if (isSuccess) {
       toast.success("Saved");
-      navigate(`/dashboard/edit-dox/${createdDoxData.id}`, {
-        replace: true,
-        state: { createdDoxData },
-      });
+      // navigate(`/dashboard/edit-dox/${createdDoxData.id}`, {
+      //   replace: true,
+      //   state: { createdDoxData },
+      // });
+
+      navigate("/dox")
     }
   }, [isSuccess]);
 

@@ -1,6 +1,6 @@
 import style from "./EditOneDox.module.scss";
 import { useState, useEffect, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 // react-quill
 import ReactQuill, { Quill } from "react-quill";
 import imageResize from "quill-image-resize-module-react";
@@ -96,6 +96,13 @@ export default function EditOneDox() {
   const [title, setTitle] = useState(createdDoxData?.title || "");
   const [bio, setBio] = useState(createdDoxData?.bio || "");
   const { mutate, data: editedDoxData, isPending, isSuccess } = useEditDoxApi();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/dox");
+    }
+  }, [isSuccess]);
 
   const formRef = useRef();
   const handleSubmit = (e) => {

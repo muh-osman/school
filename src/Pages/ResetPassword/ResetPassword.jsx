@@ -38,6 +38,7 @@ export default function ResetPassword() {
     const formData = new FormData(e.currentTarget);
     const password = formData.get("password");
     const password_confirmation = formData.get("password_confirmation");
+    const pin = formData.get("pin");
 
     if (password !== password_confirmation) {
       toast.error("Passwords do not match.");
@@ -49,6 +50,7 @@ export default function ResetPassword() {
       email,
       password,
       password_confirmation,
+      pin,
     });
   };
 
@@ -75,7 +77,7 @@ export default function ResetPassword() {
           <PasswordIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-          إعادة تعيين كلمة المرور
+          إعادة تعيين بيانات الدخول
         </Typography>
         <Box
           ref={formRef}
@@ -91,7 +93,7 @@ export default function ResetPassword() {
                 fullWidth
                 id="password"
                 label="كلمة المرور الجديدة"
-                type="password"
+                type="text"
                 name="password"
                 autoComplete="new-password"
                 autoFocus
@@ -104,9 +106,19 @@ export default function ResetPassword() {
                 fullWidth
                 id="confirm-password"
                 label="تأكيد كلمة المرور الجديدة"
-                type="password"
+                type="text"
                 name="password_confirmation"
                 autoComplete="password"
+                disabled={isPending || isSuccess}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                label="رمز الدخول الجديد"
+                type="text"
+                name="pin"
                 disabled={isPending || isSuccess}
               />
             </Grid>

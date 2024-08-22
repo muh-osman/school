@@ -67,12 +67,17 @@ export default function EditOneTable() {
 
   return (
     <div className={style.container}>
-      {fetchStatus === "fetching" ||
-        (isPending && (
-          <div className={style.progressContainer}>
-            <LinearProgress />
-          </div>
-        ))}
+      {fetchStatus === "fetching" && (
+        <div className={style.progressContainer}>
+          <LinearProgress />
+        </div>
+      )}
+
+      {isPending && (
+        <div className={style.progressContainer}>
+          <LinearProgress />
+        </div>
+      )}
 
       <Box
         ref={editFormRef}

@@ -17,7 +17,7 @@ export const useResetPasswordApi = () => {
     },
 
     onSuccess: () => {
-      toast.success("Your password has been reset.");
+      toast.success("Your password and PIN have been reset.");
 
       setTimeout(() => {
         navigate("/login", { replace: true });

@@ -19,10 +19,21 @@
 
 @media (max-width: 600px) {
   .container {
-    min-height: calc(100vh - 112px);
+    min-height: calc(100vh - 104px);
   }
 
   .progressContainer {
     top: 56px;
+  }
+}
+
+.image_box {
+  img {
+    @media (max-width: 600px) {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }

@@ -21,7 +21,8 @@ class UserController extends Controller
 {
 
     // Define the frontend URL as a class property to use it in varifaction email address
-    protected $frontendUrl = 'http://localhost:3000';
+    protected $frontendUrl = 'https://www.services2005.com';
+    // protected $frontendUrl = 'http://localhost:3000';
 
 
     // Register
@@ -98,52 +99,52 @@ class UserController extends Controller
         }
     }
 
-// login
-public function login(Request $request)
-{
-    try {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    // login
+    public function login(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
+            if (Auth::attempt($request->only('email', 'password'))) {
+                $user = Auth::user();
 
-            // Check if the user provided a 'pin'
-            if ($request->has('pin')) {
-                if ($user->pin === $request->input('pin')) {
-                    $pinStatus = 'true'; // Pin matches
+                // Check if the user provided a 'pin'
+                if ($request->has('pin')) {
+                    if ($user->pin === $request->input('pin')) {
+                        $pinStatus = 'true'; // Pin matches
+                    } else {
+                        return response()->json(['message' => 'Incorrect PIN provided.'], 422);
+                    }
                 } else {
-                    return response()->json(['message' => 'Incorrect PIN provided.'], 422);
+                    $pinStatus = 'guest'; // Pin not provided
                 }
-            } else {
-                $pinStatus = 'guest'; // Pin not provided
+
+                $token = $user->createToken('authToken')->plainTextToken;
+
+                // Exclude the 'pin' field from the user data in the response
+                $userData = $user->toArray();
+                unset($userData['pin']);
+
+                return response()->json([
+                    'user' => $userData,
+                    'pin_status' => $pinStatus,
+                    'message' => 'Login successful.',
+                    'token' => $token,
+                ]);
             }
 
-            $token = $user->createToken('authToken')->plainTextToken;
-
-            // Exclude the 'pin' field from the user data in the response
-            $userData = $user->toArray();
-            unset($userData['pin']);
-
-            return response()->json([
-                'user' => $userData,
-                'pin_status' => $pinStatus,
-                'message' => 'Login successful.',
-                'token' => $token,
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
             ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Login failed. ' . $e->getMessage()], 500);
         }
-
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    } catch (ValidationException $e) {
-        return response()->json(['message' => $e->getMessage()], 422);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Login failed. ' . $e->getMessage()], 500);
     }
-}
 
 
     // Verify the user's email address.
@@ -241,6 +242,7 @@ public function login(Request $request)
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed|min:6',
+            'pin' => 'required|string',
         ]);
 
         // Decode the email from the URL
@@ -254,10 +256,11 @@ public function login(Request $request)
                 'password_confirmation' => $request->input('password_confirmation'),
                 'token' => $request->input('token'),
             ],
-            function ($user, $password) {
+            function ($user, $password) use ($request) {
                 // Update the user's password
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
+                    'pin' => $request->input('pin'),
                 ])->save();
 
                 // Ensure the user is logged out of any other sessions
@@ -270,8 +273,7 @@ public function login(Request $request)
 
         // Return a JSON response based on the status
         return $status == Password::PASSWORD_RESET
-            ? response()->json(['message' => 'Your password has been reset.'], 200)
+            ? response()->json(['message' => 'Your password and PIN have been reset.'], 200)
             : response()->json(['message' => 'Invalid token or email.'], 400);
     }
-
 }

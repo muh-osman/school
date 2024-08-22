@@ -32,3 +32,14 @@ iframr {
   height: 100% !important;
   margin: auto;
 }
+
+@media (max-width: 600px) {
+
+  .carousel {
+    height: calc(100vh - 104px);
+  }
+
+  .carousel-item img {
+    height: fit-content !important;
+  }
+}

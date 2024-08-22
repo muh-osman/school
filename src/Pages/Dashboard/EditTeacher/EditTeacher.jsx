@@ -2,7 +2,6 @@ import style from "./EditTeacher.module.scss";
 // React
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 // MUI
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -31,12 +30,11 @@ export default function EditTeacher() {
   const { data: teachers, fetchStatus } = useGetAllTeachersApi();
   const { mutate, data, isPending, isSuccess } = useEditTeacherApi();
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (isSuccess) {
-      // Reset the form after successful submission
-      editFormRef.current.reset();
-      setSelectedTeachertId("");
       toast.success(data.message);
+      navigate("/");
     }
   }, [isSuccess]);
 
@@ -92,7 +90,6 @@ export default function EditTeacher() {
     mutate({ selectedTeacherId, formData });
   };
 
-  const navigate = useNavigate();
   const addImagesToAlbum = () => {
     navigate(`album/${selectedTeacherId}`);
   };

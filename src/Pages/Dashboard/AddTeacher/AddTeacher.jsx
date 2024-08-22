@@ -1,5 +1,6 @@
 import style from "./AddTeacher.module.scss";
 // React
+import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 // MUI
 import Grid from "@mui/material/Grid";
@@ -14,10 +15,8 @@ import { useAddTeacherApi } from "../../../API/useAddTeacherApi";
 import { toast } from "react-toastify";
 
 export default function AddTeacher() {
-
   // Cookie
   const [cookies, setCookie] = useCookies(["userId"]);
-
 
   const addFormRef = useRef();
   const [addFormData, setAddFormData] = useState({
@@ -29,17 +28,11 @@ export default function AddTeacher() {
 
   const { mutate, data, isPending, isSuccess } = useAddTeacherApi();
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (isSuccess) {
-      // Reset the form after successful submission
-      addFormRef.current.reset();
-      setAddFormData({
-        name: "",
-        bio: "",
-        skills: "",
-        image: "",
-      });
       toast.success(data.message);
+      navigate("/");
     }
   }, [isSuccess]);
 
@@ -65,8 +58,6 @@ export default function AddTeacher() {
     if (!validate) return;
     // Submit data
 
-
-
     const formData = new FormData();
     // Append all form data to the FormData object
     Object.keys(addFormData).forEach((key) => {
@@ -77,9 +68,9 @@ export default function AddTeacher() {
       formData.append(key, addFormData[key]);
     });
 
-      // Append userId to the FormData object
-      const userId = cookies.userId
-    formData.append('user_id', userId);
+    // Append userId to the FormData object
+    const userId = cookies.userId;
+    formData.append("user_id", userId);
 
     mutate(formData);
   };

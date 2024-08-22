@@ -51,7 +51,7 @@ export default function CarouselPage() {
           interval={null} // Disable autoplay
         >
           {albumImages.map(({ id, image }) => (
-            <Carousel.Item key={id}>
+            <Carousel.Item key={id} className={style.image_box}>
               <img className="d-block" src={image} alt={`Slide ${id}`} />
             </Carousel.Item>
           ))}
