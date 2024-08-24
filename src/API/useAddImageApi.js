@@ -5,13 +5,8 @@ import API from "./Api";
 import { toast } from "react-toastify";
 // Api
 import { fetchTeachersById } from "./useGetTeacherByIdApi";
-// Cookies
-import { useCookies } from "react-cookie";
 
 export const useAddImageApi = (id) => {
-  // Cookie
-  //   const [cookies, setCookie] = useCookies(["userId"]);
-  //   const userId = cookies.userId
 
   const qc = useQueryClient();
 

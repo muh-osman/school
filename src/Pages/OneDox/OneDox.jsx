@@ -1,6 +1,6 @@
 import style from "./OneDox.module.scss";
 import { useState, useEffect, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // react-quill
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
@@ -24,7 +24,13 @@ export default function OneDox() {
   const quillRef = useRef(null); // Create a ref for ReactQuill
 
   let { id } = useParams();
-  const { data: dox, fetchStatus } = useGetDoxDataApi(id);
+  const { data: dox, fetchStatus, error } = useGetDoxDataApi(id);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (dox) {

@@ -24,7 +24,6 @@ export default function Home() {
   // Cookie
   const [cookies] = useCookies(["token"]);
 
-  const imgUrl = process.env.REACT_APP_IMAGE_URL;
   const { data: teachers, fetchStatus } = useGetAllTeachersApi();
 
   // Search
@@ -134,10 +133,7 @@ export default function Home() {
                     <CardMedia
                       component="img"
                       height="265"
-                      image={`${imgUrl}${teacher.image.replace(
-                        "/storage/images",
-                        ""
-                      )}`}
+                      image={teacher?.image}
                       alt={teacher.name}
                     />
 

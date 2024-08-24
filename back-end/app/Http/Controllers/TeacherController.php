@@ -7,15 +7,12 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Album;
-use Illuminate\Support\Facades\File;
 
 
 class TeacherController extends Controller
@@ -23,10 +20,10 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($user_id)
+    public function index()
     {
         // Retrieve only the teachers associated with the specified user_id
-        $teachers = Teacher::where('user_id', $user_id)->with('user')->get();
+        $teachers = Teacher::where('user_id', Auth::id())->get();
 
         return response()->json($teachers);
     }
@@ -43,14 +40,15 @@ class TeacherController extends Controller
                 'skills' => 'required|string',
                 'email' => 'nullable|email',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'user_id' => 'required|exists:users,id',
             ]);
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/images', $filename);
-                $imageUrl = Storage::url($path);
+                // Move the file to the public/images directory
+                $file->move(public_path('images'), $filename);
+                // Create the URL for the image
+                $imageUrl = asset('images/' . $filename);
             } else {
                 return response()->json([
                     'status' => 'error',
@@ -63,7 +61,7 @@ class TeacherController extends Controller
                 'bio' => $validated['bio'],
                 'skills' => $validated['skills'],
                 'image' => $imageUrl,
-                'user_id' => $validated['user_id'], // Assign user_id to the teacher
+                'user_id' => Auth::id(),
             ];
 
             if (isset($validated['email'])) {
@@ -97,7 +95,21 @@ class TeacherController extends Controller
     public function show($id)
     {
         try {
+            // Get the authenticated user
+            $authenticatedUserId = auth()->id();
+
+            // Find the teacher by ID and ensure the authenticated user is the owner
             $teacher = Teacher::with('user')->findOrFail($id);
+
+            // Check if the authenticated user is the same as the teacher's user
+            if ($teacher->user_id !== $authenticatedUserId) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthorized access'
+                ], 403);
+            }
+
+            // Fetch albums associated with the teacher
             $albums = Album::where('teacher_id', $id)->get();
 
             $data = [
@@ -155,9 +167,9 @@ class TeacherController extends Controller
     private function deleteOldImage(Teacher $teacher)
     {
         if ($teacher->image) {
-            $imagePath = str_replace('/storage', 'public', $teacher->image);
-            if (Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+            $imagePath = public_path('images/' . basename($teacher->image));
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
             }
         }
     }
@@ -168,8 +180,10 @@ class TeacherController extends Controller
     private function storeNewImage($file)
     {
         $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('public/images', $filename);
-        return Storage::url($path);
+        // Move the file to the public/images directory
+        $file->move(public_path('images'), $filename);
+        // Create the URL for the image
+        return asset('images/' . $filename);
     }
 
 
@@ -199,9 +213,9 @@ class TeacherController extends Controller
 
         // Delete the image file if it exists
         if ($teacher->image) {
-            $imagePath = str_replace('/storage', '/public', $teacher->image);
-            if (Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+            $imagePath = public_path('images/' . basename($teacher->image)); // Construct the full path to the image
+            if (file_exists($imagePath)) {
+                unlink($imagePath); // Delete the file
             }
         }
 
@@ -217,13 +231,16 @@ class TeacherController extends Controller
     /**
      * Search for a teacher by name.
      */
-    public function searchTeacherByName(Request $request, $user_id)
+    public function searchTeacherByName(Request $request)
     {
         $name = $request->input('name');
 
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
         // Search for teachers by name associated with the specified user_id
-        $teachers = Teacher::where('user_id', $user_id)
-            ->where('name', 'like', $name . '%')
+        $teachers = Teacher::where('user_id', $userId)
+            ->where('name', 'like', '%' . $name . '%')
             ->with('user')
             ->get();
 

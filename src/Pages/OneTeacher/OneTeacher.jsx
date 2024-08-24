@@ -1,16 +1,15 @@
 import style from "./OneTeacher.module.scss";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Copyright from "../../Components/Copyright";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-// import ImageList from "@mui/material/ImageList";
-// import ImageListItem from "@mui/material/ImageListItem";
 // Cookies
 import { useCookies } from "react-cookie";
+// Toastify
+import { toast } from "react-toastify";
 // Api
 import useGetTeacherByIdApi from "../../API/useGetTeacherByIdApi";
 
@@ -18,12 +17,15 @@ export default function OneTeacher() {
   // Cookie
   const [cookies] = useCookies(["token"]);
 
-  const imgUrl = process.env.REACT_APP_IMAGE_URL;
-
   let { id } = useParams();
 
-  const { data: teacher, fetchStatus } = useGetTeacherByIdApi({ id });
+  const { data: teacher, fetchStatus, error } = useGetTeacherByIdApi({ id });
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   return (
     <div className={style.container}>
@@ -44,10 +46,7 @@ export default function OneTeacher() {
             {teacher?.teacher?.image && (
               <div>
                 <img
-                  src={`${imgUrl}${teacher.teacher.image.replace(
-                    "/storage/images",
-                    ""
-                  )}`}
+                  src={teacher?.teacher?.image}
                   alt={teacher.teacher.name}
                   className={style.img_circle}
                 />

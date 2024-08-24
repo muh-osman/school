@@ -1,16 +1,29 @@
 import style from "./CarouselPage.module.scss";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
+// Toastify
+import { toast } from "react-toastify";
 // API
 import useGetAlbumImagesApi from "../../API/useGetAlbumImagesApi";
 //
 import Carousel from "react-bootstrap/Carousel";
-import { useEffect, useState } from "react";
+
 
 export default function CarouselPage() {
   let { teacherId, imageId } = useParams();
-  const { data: albumImages, fetchStatus } = useGetAlbumImagesApi(teacherId);
+  const {
+    data: albumImages,
+    fetchStatus,
+    error,
+  } = useGetAlbumImagesApi(teacherId);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   // State to manage the active index
   const [activeIndex, setActiveIndex] = useState(0);

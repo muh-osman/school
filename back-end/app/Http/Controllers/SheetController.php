@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Sheet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SheetController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($user_id)
+    public function index()
     {
         // Retrieve only the sheets associated with the specified user_id
-        $sheets = Sheet::where('user_id', $user_id)->with('user')->get();
+        $sheets = Sheet::where('user_id', Auth::id())->get();
 
         return response()->json($sheets);
     }
@@ -32,10 +33,17 @@ class SheetController extends Controller
      */
     public function show($id)
     {
-        $sheet = Sheet::with('columns', 'rows.cells')->find($id);
+        $sheet = Sheet::find($id);
 
         if (!$sheet) {
             return response()->json(['message' => 'Sheet not found'], 404);
+        }
+
+        if ($sheet->user_id !== auth()->id()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access'
+            ], 403);
         }
 
         return response()->json($sheet);
@@ -46,8 +54,18 @@ class SheetController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the sheet by ID
         $sheet = Sheet::findOrFail($id);
 
+        // Check if the authenticated user is the owner of the sheet
+        if ($sheet->user_id !== Auth::id()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access'
+            ], 403);
+        }
+
+        // Update the sheet properties
         $sheet->name = $request->input('name');
         $sheet->description = $request->input('description');
 
@@ -60,10 +78,12 @@ class SheetController extends Controller
             $sheet->public_link = $request->input('public_link');
         }
 
+        // Save the updated sheet
         $sheet->save();
 
         return response()->json(['message' => 'Sheet updated successfully'], 200);
     }
+
 
 
 
@@ -80,13 +100,16 @@ class SheetController extends Controller
     /**
      * Search for a table by name.
      */
-    public function searchTableByName(Request $request, $user_id)
+    public function searchTableByName(Request $request)
     {
+        // Get the authenticated user's ID
+        $user_id = auth()->id();
+
         $name = $request->input('name');
 
         // Search for tables by name associated with the specified user_id
         $tables = Sheet::where('user_id', $user_id)
-            ->where('name', 'like', $name . '%')
+            ->where('name', 'like', '%' . $name . '%')
             ->with('user')
             ->get();
 

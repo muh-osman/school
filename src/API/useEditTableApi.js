@@ -5,13 +5,8 @@ import API from "./Api";
 import { toast } from "react-toastify";
 // Api
 import { fetchAllTables } from "./useGetAllTablesApi";
-// Cookies
-import { useCookies } from "react-cookie";
 
 export const useEditTableApi = () => {
-  // Cookie
-  const [cookies, setCookie] = useCookies(["userId"]);
-  const userId = cookies.userId;
 
   const qc = useQueryClient();
 
@@ -28,7 +23,7 @@ export const useEditTableApi = () => {
     onSuccess: () => {
       qc.prefetchQuery({
         queryKey: ["allTables"],
-        queryFn: () => fetchAllTables(userId),
+        queryFn: () => fetchAllTables(),
       });
       toast.success("Sheet updated successfully");
 

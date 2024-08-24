@@ -7,16 +7,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
-// Cookies
-import { useCookies } from "react-cookie";
 // Api
 import { useAddTeacherApi } from "../../../API/useAddTeacherApi";
 // Toastify
 import { toast } from "react-toastify";
 
 export default function AddTeacher() {
-  // Cookie
-  const [cookies, setCookie] = useCookies(["userId"]);
 
   const addFormRef = useRef();
   const [addFormData, setAddFormData] = useState({
@@ -67,10 +63,6 @@ export default function AddTeacher() {
       }
       formData.append(key, addFormData[key]);
     });
-
-    // Append userId to the FormData object
-    const userId = cookies.userId;
-    formData.append("user_id", userId);
 
     mutate(formData);
   };
@@ -125,19 +117,6 @@ export default function AddTeacher() {
               onChange={handleInputChange}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="البريد الالكتروني"
-              type="email"
-              name="email"
-              required
-              disabled={isPending}
-              value={addFormData.email}
-              onChange={handleInputChange}
-              dir="ltr"
-            />
-          </Grid> */}
 
           <Grid item xs={12}>
             <TextField

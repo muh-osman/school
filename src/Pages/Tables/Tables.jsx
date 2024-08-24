@@ -40,6 +40,9 @@ export default function Tables() {
 
   const { data: tables, fetchStatus } = useGetAllTablesApi();
 
+
+
+
   // Search
   const [searchQuery, setSearchQuery] = useState("");
   const [timer, setTimer] = useState(null);

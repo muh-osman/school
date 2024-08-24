@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('bio');
             $table->string('image');
             $table->text('skills');
-            $table->string('email');
+            $table->string('email')->nullable();
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

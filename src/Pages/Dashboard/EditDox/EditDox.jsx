@@ -11,8 +11,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
 // Api
 import useGetAllDoxesTitleApi from "../../../API/useGetAllDoxesTitleApi";
-// Toastify
-// import { toast } from "react-toastify";
+
 
 export default function EditDox() {
   const editFormRef = useRef();

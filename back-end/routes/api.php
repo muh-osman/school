@@ -2,14 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\RowController;
-use App\Http\Controllers\CellController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\SheetController;
-use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DoxController;
 
@@ -29,64 +24,34 @@ Route::middleware('auth:sanctum')->group(function () {
     // Logout Route (http://localhost:8000/api/logout)
     Route::post('/logout', [UserController::class, 'logout']);
 
-
     // Resend verification email (http://localhost:8000/api/resend-verify-email)
     Route::post('/resend-verify-email', [UserController::class, 'resendVerifyEmail']);
 
 
-    // Show all posts:      method GET    =>  http://localhost:8000/api/posts
-    // Create post:         method POST   =>  http://localhost:8000/api/posts
-    // Show post by id:     method GET    =>  http://localhost:8000/api/posts/1
-    // Update post by id:   method POST   =>  http://localhost:8000/api/posts/1?_method=PATCH
-    // Delete post by id:   method DELETE =>  http://localhost:8000/api/posts/1
-    Route::apiResource('posts', PostController::class);
-
-
+    // Teachers
     Route::resource('teachers', TeacherController::class)->except(['index', 'show']);
 
     // Route for getting all teachers that associated-with-user
-    Route::get('/teachers-associated-with-user/{user_id}', [TeacherController::class, 'index']);
+    Route::get('/teachers-associated-with-user', [TeacherController::class, 'index']);
 
     // Route for getting a teacher by ID
     Route::get('/teachers/{id}', [TeacherController::class, 'show']);
 
     // Search for teacher
-    Route::post('/teachers/search/{user_id}', [TeacherController::class, 'searchTeacherByName']);
+    Route::post('/teachers/search', [TeacherController::class, 'searchTeacherByName']);
+
 
     // tables
     Route::post('/tables', [SheetController::class, 'store']);
     // Route::post('/tables/{id}', [SheetController::class, 'update']);
     Route::match(['patch'], '/tables/{id}', [SheetController::class, 'update']);
     Route::delete('/tables/{id}', [SheetController::class, 'destroy']);
-    Route::get('/tables-associated-with-user/{user_id}', [SheetController::class, 'index']);
+    Route::get('/tables-associated-with-user', [SheetController::class, 'index']);
     Route::get('/tables/{id}', [SheetController::class, 'show']);
-    Route::post('/tables/search/{user_id}', [SheetController::class, 'searchTableByName']);
-
-    // Columns Table
-    Route::post('/columns', [ColumnController::class, 'store']);
-    Route::put('/columns/{id}', [ColumnController::class, 'update']);
-    Route::delete('/columns/{id}', [ColumnController::class, 'destroy']);
-    Route::get('/columns', [ColumnController::class, 'index']);
-    Route::get('/columns/{id}', [ColumnController::class, 'show']);
-
-    // Rows table
-    Route::post('/rows', [RowController::class, 'store']);
-    Route::put('/rows/{id}', [RowController::class, 'update']);
-    Route::delete('/rows/{id}', [RowController::class, 'destroy']);
-    Route::get('/rows', [RowController::class, 'index']);
-    Route::get('/rows/{id}', [RowController::class, 'show']);
-
-    // Cells table
-    Route::post('/cells', [CellController::class, 'store']);
-    Route::put('/cells/{id}', [CellController::class, 'update']);
-    Route::delete('/cells/{id}', [CellController::class, 'destroy']);
-    Route::get('/cells', [CellController::class, 'index']);
-    Route::get('/cells/{id}', [CellController::class, 'show']);
+    Route::post('/tables/search', [SheetController::class, 'searchTableByName']);
 
 
     // Album
-    // Route::get('albums', [AlbumController::class, 'index']);
-    // Route::get('albums/{id}', [AlbumController::class, 'show']);
     Route::post('albums', [AlbumController::class, 'store']);
     //
     Route::get('/albums/teacher/{teacher_id}', [AlbumController::class, 'show']);
@@ -95,18 +60,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Dox
     // Route to get all dox titles
-    Route::get('doxes-title-associated-with-user/{user_id}', [DoxController::class, 'index']);
+    Route::get('doxes-title-associated-with-user', [DoxController::class, 'index']);
     // Route to get a single dox by ID
     Route::get('doxes/{id}', [DoxController::class, 'show']);
     // Route to create a new dox
     Route::post('doxes', [DoxController::class, 'store']);
     // Route to update an existing dox
-    // Route::post('doxes/{id}', [DoxController::class, 'update']);
     Route::match(['patch'], '/doxes/{id}', [DoxController::class, 'update']);
     // Route to delete a dox
     Route::delete('doxes/{id}', [DoxController::class, 'destroy']);
     // search
-    Route::post('/doxes/search/{user_id}', [DoxController::class, 'searchDoxByName']);
+    Route::post('/doxes/search', [DoxController::class, 'searchDoxByName']);
 
 });
 

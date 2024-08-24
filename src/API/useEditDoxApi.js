@@ -5,14 +5,8 @@ import API from "./Api";
 import { toast } from "react-toastify";
 // Api
 import { fetchAllDoxesTitle } from "./useGetAllDoxesTitleApi";
-// Cookies
-import { useCookies } from "react-cookie";
 
 export const useEditDoxApi = () => {
-  // Cookie
-  const [cookies, setCookie] = useCookies(["userId"]);
-  const userId = cookies.userId;
-
   const qc = useQueryClient();
 
   return useMutation({
@@ -24,7 +18,7 @@ export const useEditDoxApi = () => {
     onSuccess: () => {
       qc.prefetchQuery({
         queryKey: ["allDoxesTitle"],
-        queryFn: () => fetchAllDoxesTitle(userId),
+        queryFn: () => fetchAllDoxesTitle(),
       });
       toast.success("Updated successfully");
     },

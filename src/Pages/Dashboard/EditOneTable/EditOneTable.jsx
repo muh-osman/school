@@ -6,6 +6,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+// Toastify
+import { toast } from "react-toastify";
 // API
 import useGetTableDataApi from "../../../API/useGetTableDataApi";
 import { useEditTableApi } from "../../../API/useEditTableApi";
@@ -14,8 +16,14 @@ export default function EditOneTable() {
   let { id } = useParams();
   const editFormRef = useRef();
 
-  const { data: table, fetchStatus } = useGetTableDataApi(id);
+  const { data: table, fetchStatus, error } = useGetTableDataApi(id);
   const { mutate, data, isPending, isSuccess } = useEditTableApi();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   // console.log(table?.private_link);
 

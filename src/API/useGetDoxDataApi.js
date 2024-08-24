@@ -8,8 +8,6 @@ export const fetchDoxData = async (id) => {
 };
 
 export default function useGetDoxDataApi(id) {
-
-
   return useQuery({
     queryKey: ["dox", id],
     queryFn: () => fetchDoxData(id),

@@ -43,7 +43,6 @@ import EditDox from "./Pages/Dashboard/EditDox/EditDox";
 import EditOneDox from "./Pages/Dashboard/EditOneDox/EditOneDox";
 import DeleteDox from "./Pages/Dashboard/DeleteDox/DeleteDox";
 
-import Profile from "./Pages/Dashboard/Profile/Profile";
 import NotFound from "./Pages/NotFound/NotFound";
 import OneTable from "./Pages/OneTable/OneTable";
 
@@ -100,7 +99,6 @@ export default function App() {
             <Route path="edit-dox/:id" element={<EditOneDox />} />
             <Route path="delete-dox" element={<DeleteDox />} />
 
-            <Route path="profile" element={<Profile />} />
           </Route>
           {/* End protected route */}
         </Route>

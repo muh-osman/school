@@ -1,16 +1,16 @@
 import style from "./Album.module.scss";
 // React
 import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 // MUI
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
+// import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CollectionsIcon from "@mui/icons-material/Collections";
 // Toastify
@@ -24,9 +24,19 @@ export default function Album() {
   let { id } = useParams();
 
   // Images form
-  const { data: teacher, fetchStatus } = useGetTeacherByIdApi({
+  const {
+    data: teacher,
+    fetchStatus,
+    error,
+  } = useGetTeacherByIdApi({
     id: id,
   });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   // Delete image
   const {

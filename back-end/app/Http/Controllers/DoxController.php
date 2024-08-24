@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Log;
 use App\Models\Dox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class DoxController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($user_id)
+    public function index()
     {
         // Retrieve only the id and title of the doxes associated with the specified user_id
-        $doxes = Dox::where('user_id', $user_id)
+        $doxes = Dox::where('user_id', Auth::id())
             ->select('id', 'title') // Select only the id and title fields
             ->get();
 
@@ -55,10 +56,20 @@ class DoxController extends Controller
     // Get a single dox by ID
     public function show($id)
     {
+        // Find the dox by ID
         $dox = Dox::find($id);
 
+        // Check if the dox exists
         if (!$dox) {
             return response()->json(['message' => 'Dox not found'], 404);
+        }
+
+        // Check if the authenticated user is the owner of the dox
+        if ($dox->user_id !== auth()->id()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access'
+            ], 403);
         }
 
         return response()->json($dox);
@@ -69,12 +80,23 @@ class DoxController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the dox by ID
         $dox = Dox::find($id);
 
+        // Check if the dox exists
         if (!$dox) {
             return response()->json(['message' => 'Dox not found'], 404);
         }
 
+        // Check if the authenticated user is the owner of the dox
+        if ($dox->user_id !== auth()->id()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access'
+            ], 403);
+        }
+
+        // Validate the request
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'bio' => 'sometimes|required|string',
@@ -90,7 +112,6 @@ class DoxController extends Controller
 
         return response()->json($dox);
     }
-
 
 
     /**
@@ -113,14 +134,19 @@ class DoxController extends Controller
     /**
      * Search for a dox by title.
      */
-    public function searchDoxByName(Request $request, $user_id)
+    /**
+     * Search for a dox by title.
+     */
+    public function searchDoxByName(Request $request)
     {
         $title = $request->input('title');
 
-        // Search for dox by title associated with the specified user_id
-        $doxes = Dox::where('user_id', $user_id)
-            ->where('title', 'like', $title . '%')
-            ->with('user')
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Search for dox by title associated with the authenticated user
+        $doxes = Dox::where('user_id', $userId)
+            ->where('title', 'like', '%' . $title . '%')
             ->get();
 
         if ($doxes->isEmpty()) {

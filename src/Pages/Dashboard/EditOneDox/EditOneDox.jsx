@@ -56,7 +56,13 @@ export default function EditOneDox() {
 
   let { id } = useParams();
 
-  const { data: dox, fetchStatus } = useGetDoxDataApi(id);
+  const { data: dox, fetchStatus, error } = useGetDoxDataApi(id);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (dox) {
@@ -197,6 +203,11 @@ export default function EditOneDox() {
   return (
     <div className={style.container} dir="ltr">
       {isPending && (
+        <div className={style.progressContainer}>
+          <LinearProgress />
+        </div>
+      )}
+      {fetchStatus === "fetching" && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>
